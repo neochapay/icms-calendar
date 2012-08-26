@@ -1,0 +1,18 @@
+.signup{
+  float: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top:5px;
+  padding-bottom: 5px;
+  background-color: #EBEBEB;
+  display: block;
+  font-size: 20px;
+}
+
+.signup A{
+  text-decoration: none;
+}
+
+.eventlist{
+  padding-bottom: 15px;
+}
