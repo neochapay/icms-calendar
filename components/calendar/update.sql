@@ -1,6 +1,6 @@
 ALTER TABLE  `cms_events` ADD  `parent_id` INT NOT NULL;
 
-ALTER TABLE  `cms_events` CHANGE  `apx`  `category_id` INT NOT NULL
+ALTER TABLE  `cms_events` CHANGE  `apx`  `category_id` INT NOT NULL;
 
 CREATE TABLE IF NOT EXISTS `cms_fotolib` (
 `id` int(11) NOT NULL AUTO_INCREMENT,

@@ -703,51 +703,84 @@ function calendar()
     $output = array();
     foreach($events as $data)
     {
-      $data['title'] = iconv("CP1251","UTF8",$data["title"]);
+      $data['title'] = iconv("cp1251","utf8",$data["title"]);
       $data['start'] = date("Y-m-d H:i:s",$data["start_time"]);
       $data['end'] = date("Y-m-d H:i:s",$data["end_time"]);
       $data['url'] = "/calendar/event".$data['id'].".html";
       
-      if($data["type"] != "private" or $inUser->id == $data['author_id'])
+      if($data["author_id"] == $inUser->id)
       {
-	if($data["author_id"] == $inUser->id)
-	{
-	  $data['editable'] = "true";
-	}
-	else
-	{
-	  $data['editable'] = "false";	
-	}
+	$data['editable'] = true;
+      }
+      else
+      {
+	$data['editable'] = false;	
+      }
 	
-	if($data["end_time"]-$data["start_time"] > 60*60*8)
-	{
-	  $data['allDay'] = "true";
-	}
+      if($data["end_time"]-$data["start_time"] > 60*60*8)
+      {
+	$data['allDay'] = "true";
+      }
 	
-	if(!$data['category_id'])
+      if(!$data['category_id'])
+      {
+	switch($data["type"])
 	{
-	  switch($data["type"])
-	  {
-	    case "public" :
-	      $data['color'] = $cfg['public_bg_color'];
-	      $data['textColor'] = $cfg['public_tx_color'];
-	      break;
-	    case "private" :
-	      $data['color'] = $cfg['private_bg_color'];
-	      $data['textColor'] = $cfg['private_tx_color'];
-	      break;
-	  }
-	}
-	else
-	{
-	  $data['color'] = $data['bg'];
-	  $data['textColor'] = $data['tx'];
+	  case "public" :
+	    $data['color'] = $cfg['public_bg_color'];
+	    $data['textColor'] = $cfg['public_tx_color'];
+	    break;
+	  case "private" :
+	    $data['color'] = $cfg['private_bg_color'];
+	    $data['textColor'] = $cfg['private_tx_color'];
+	    break;
 	}
       }
-      $output[] = $data;
+      else
+      {
+	$data['color'] = $data['bg'];
+	$data['textColor'] = $data['tx'];
+      }
+
+      if($data["type"] == "private" and $data['author_id'] != $inUser->id)
+      {
+      }
+      else
+      {
+	$output[] = $data;
+      }
     }
     
     print json_encode($output);
+    exit;
+  }
+  
+  if($do == "isc_calendar")
+  {
+    header('Content-type: text/calendar; charset=utf-8');
+    header('Content-Disposition: inline; filename=calendar.ics');
+    echo "BEGIN:VCALENDAR\n";
+    echo "VERSION:2.0\n";
+    echo "PRODID:-//hacksw/handcal//NONSGML v1.0//EN'\n";
+    $events = $model->getCalendar(time()-60*60*24*30, time()+60*60*24*30, 0);
+    
+    foreach($events as $event)
+    {
+      if($event['type'] == "public")
+      {
+	$title = iconv("cp1251","utf8",$event["title"]);
+
+	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"])."Z";
+	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"])."Z";
+	
+	echo "BEGIN:VEVENT\n";
+	echo "DTSTART:$dtstart\n";
+	echo "DTEND:$dtend\n";
+	echo "SUMMARY:$title\n";
+	echo "END:VEVENT\n";
+      }
+    }
+    echo "END:VCALENDAR\n";
     exit;
   }
 //FOTOLIB

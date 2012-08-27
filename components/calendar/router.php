@@ -68,7 +68,12 @@ function routes_calendar()
       '_uri'  => '/^calendar\/imagedelete\/([0-9]+).html$/i',
       'do'    => 'imagedelete',
       1	      => 'image_id'
-     );   
+     );
+
+  $routes[] = array(
+      '_uri'  => '/^calendar\/calendar.ics$/i',
+      'do'    => 'isc_calendar'
+  );     
  return $routes;
 }
 ?>
