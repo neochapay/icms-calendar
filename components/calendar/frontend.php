@@ -630,6 +630,7 @@ function calendar()
       }
       
       $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,"");
+      
       $output = array();
       
       if(!$event_id)
@@ -644,6 +645,18 @@ function calendar()
 	$output['event_id'] = $event_id;
 	$output['bg'] = $event['bg'];
 	$output['tx'] = $event['tx'];
+	
+	if($type != "private")
+	{
+	  cmsActions::log('add_event', array(
+              'object' => 'событие',
+              'object_url' => '/calendar/event'.$event_id.'.html',
+              'object_id'=>$event_id,
+              'target' => $title,
+              'target_url' => '/calendar/event'.$event_id.'.html',
+              'target_id' => '0',
+              'description' => $title));
+	}
       }
       print json_encode($output);
     }
@@ -769,6 +782,7 @@ function calendar()
       if($event['type'] == "public")
       {
 	$title = iconv("cp1251","utf8",$event["title"]);
+	$content = iconv("cp1251","utf8",$event["content"]);
 
 	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"])."Z";
 	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"])."Z";
@@ -777,6 +791,7 @@ function calendar()
 	echo "DTSTART:$dtstart\n";
 	echo "DTEND:$dtend\n";
 	echo "SUMMARY:$title\n";
+	echo "DESCRIPTION:$content\n";
 	echo "END:VEVENT\n";
       }
     }

@@ -16,3 +16,20 @@
 .eventlist{
   padding-bottom: 15px;
 }
+
+.even{
+  width: 98%;
+  margin-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius:6px; 
+  -webkit-border-radius:6px; 
+  -moz-border-radius:5px; 
+  -khtml-border-radius:10px;  
+}
+
+.even A{
+  text-decoration: none;
+  padding-left: 15px;
+  font-size: 14px;
+}

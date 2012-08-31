@@ -39,6 +39,8 @@ if (!isset($cfg['private_bg_color'])) { $cfg['private_bg_color'] = '#3366CC'; }
 if (!isset($cfg['private_tx_color'])) { $cfg['private_tx_color'] = '#000000'; }
 if (!isset($cfg['public_bg_color'])) { $cfg['public_bg_color'] = '#C3BCB9'; }
 if (!isset($cfg['public_tx_color'])) { $cfg['public_tx_color'] = '#000000'; }
+if (!isset($cfg['calendar_module'])) { $cfg['calendar_module'] = 'all'; }
+if (!isset($cfg['calendar_module_count'])) { $cfg['calendar_module_count'] = '5'; }
 
 //SAVE CONFIG
 if($opt=='saveconfig'){
@@ -51,6 +53,8 @@ if($opt=='saveconfig'){
     $cfg['private_tx_color'] = $inCore->request('private_tx_color', 'str');
     $cfg['public_bg_color'] = $inCore->request('public_bg_color', 'str');
     $cfg['public_tx_color'] = $inCore->request('public_tx_color', 'str');
+    $cfg['calendar_module'] = $inCore->request('calendar_module', 'str');
+    $cfg['calendar_module_count'] = $inCore->request('calendar_module_count', 'int');
  
 //Добавление категорий 
     if($inCore->request('new_name', 'str'))
@@ -123,7 +127,8 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
     <ul id="tabs">
         <li><a href="#basic"><span>Общие</span></a></li>
         <li><a href="#calendar_category"><span>Категории</span></a></li>
-	<li><a href="#calendar_image"><span>Изображения</span></a></li>	        
+	<li><a href="#calendar_image"><span>Изображения</span></a></li>
+	<li><a href="#calendar_module"><span>Модуль</span></a></li>
     </ul>
     <div id="basic">
         <table width="661" border="0" cellpadding="10" cellspacing="0" class="proptable">
@@ -315,6 +320,32 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
 	    </select>
 	  </td>
 	</tr>
+      </table>
+    </div>
+    <div id="calendar_module">
+      <table width="661" border="0" cellpadding="10" cellspacing="0" class="proptable">
+	<tr>
+	  <td width="250">
+	    <strong>Вид: </strong><br/>
+            <span class="hinttext">
+	      Режим показа
+	    </span>
+          </td>
+          <td valign="top">
+	    <select name="calendar_module" id="calendar_module" style="width:245px">
+	      <option value="all" <?php if ($cfg['calendar_module']=='all'){?>selected="selected"<?php } ?>>Все события календаря</option>
+              <option value="user" <?php if ($cfg['calendar_module']=='user'){?>selected="selected"<?php } ?>>Только события пользователя</option>
+            </select>
+          </td>
+        </tr>
+	<tr>
+	  <td width="250">
+	    <strong>Количество строк: </strong><br/>
+          </td>
+          <td valign="top">
+	    <input name="calendar_module_count" size="2" maxlength="2" value="<?php print $cfg['calendar_module_count'];?>">
+          </td>
+        </tr>        
       </table>
     </div>
 <p>
