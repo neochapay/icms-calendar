@@ -49,6 +49,11 @@ function routes_calendar()
   );
 
   $routes[] = array(
+      '_uri'  => '/^calendar\/ajax_add_form$/i',
+      'do'    => 'ajax_add_form'
+  );
+  
+  $routes[] = array(
       '_uri'  => '/^calendar\/ajax_edit$/i',
       'do'    => 'ajax_edit'
   );

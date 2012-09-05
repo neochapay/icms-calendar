@@ -601,25 +601,39 @@ function calendar()
 //AJAX  
   if($do == "ajax_add")
   {
-    if($inUser->id != 0)
+    $guest = TRUE;
+    
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
     {
-      $title = iconv("UTF-8","CP1251",$inCore->request('title', 'str'));
-      $start = $inCore->request('start', 'str');
-      $end = $inCore->request('end', 'str');
-      $category_id = $inCore->request('category', 'int');
-      $private = $inCore->request('private', 'str');
-      $allDay = $inCore->request('allDay', 'str');
+      $guest = FALSE;
+    }
+    
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
+    }  
+  
+    if(!$guest)
+    {
+      $title = iconv("utf8","cp1251",$inCore->request('title', 'str'));
+      $type = $inCore->request('type', 'str');
+      $date_start = $inCore->request('date_start', 'str');
+      $date_end = $inCore->request('date_end', 'str');
+      $hour_start = $inCore->request('hour_start', 'str');
+      $hour_end = $inCore->request('hour_end', 'str');
+      $min_start = $inCore->request('min_start', 'str');
+      $min_end = $inCore->request('min_end', 'str');
+      $content = iconv("utf8","cp1251",$inCore->request('content', 'str'));
       
-      $start_time = strtotime($start);
-     
-      if($allDay == "true")
-      {
-	$end = str_replace("00:00:00","23:59:59",$start);
-      }
+      $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
+      $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
       
-      $end_time = strtotime($end);
-      
-      if($private == "true")
+      if($type == "prvate")
       {
 	$category_id = 0;
 	$type = "private";
@@ -629,7 +643,7 @@ function calendar()
 	$type = "public";
       }
       
-      $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,"");
+      $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content);
       
       $output = array();
       
@@ -658,8 +672,13 @@ function calendar()
               'description' => $title));
 	}
       }
-      print json_encode($output);
     }
+    else
+    {
+      $output['error'] = TRUE;
+      $output['errortext'] = iconv("CP1251","UTF-8","Ошибка доступа");    
+    }
+    print json_encode($output);
     exit;
   }
   if($do == "ajax_edit")
@@ -798,7 +817,33 @@ function calendar()
     echo "END:VCALENDAR\n";
     exit;
   }
-//FOTOLIB
+
+  if($do == "ajax_add_form")
+  {
+    $start = strtotime($inCore->request('start', 'str'));
+    $end = strtotime($inCore->request('end', 'str'));
+    
+    if(!$inUser->id)
+    {
+      print "Ошибка доступа.";
+      exit;
+    }
+    
+    $catigories = $model->getAllCategories();
+    
+    $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
+    $smarty->assign('catigories', $catigories);
+    $smarty->assign('start_date', date("d.m.Y", $start));
+    $smarty->assign('start_hour', date("H", $start));
+    $smarty->assign('start_min', date("i", $start));
+    $smarty->assign('end_date', date("d.m.Y", $end));
+    $smarty->assign('end_hour', date("H", $end));
+    $smarty->assign('end_min', date("i", $end));
+    $smarty->assign('bb_toolbar', $bb_toolbar);
+    $smarty->assign('smilies', $smilies);
+    $smarty->display('com_calendar_add.tpl');
+    exit;
+  }
 //   FOTOLIB
   if($do == "imagerotate")
   {

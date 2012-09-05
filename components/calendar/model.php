@@ -118,16 +118,30 @@ class cms_model_calendar
 
   function getCalendar($start_time, $end_time, $parent_id)
   {
-    $sql ="SELECT cms_events.*,
-    cms_events_category.name as category_name,
-    cms_events_category.bg,
-    cms_events_category.tx,
-    cms_events_category.id as category_id
-    FROM cms_events 
-    LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id
-    WHERE cms_events.parent_id = '{$parent_id}' 
-    AND cms_events.start_time > '{$start_time}'
-    AND cms_events.end_time < '{$end_time}'";
+    if($start_time and $end_time)
+    {
+      $sql ="SELECT cms_events.*,
+      cms_events_category.name as category_name,
+      cms_events_category.bg,
+      cms_events_category.tx,
+      cms_events_category.id as category_id
+      FROM cms_events 
+      LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id
+      WHERE cms_events.parent_id = '{$parent_id}' 
+      AND cms_events.start_time > '{$start_time}'
+      AND cms_events.end_time < '{$end_time}'";
+    }
+    else
+    {
+      $sql ="SELECT cms_events.*,
+      cms_events_category.name as category_name,
+      cms_events_category.bg,
+      cms_events_category.tx,
+      cms_events_category.id as category_id
+      FROM cms_events 
+      LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id";
+    }
+    
     $result = $this->inDB->query($sql);
     
     if ($this->inDB->error()) 

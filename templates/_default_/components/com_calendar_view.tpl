@@ -55,11 +55,22 @@ $(document).ready(function() {
 			selectable: true,
 			selectHelper: true,
 			select: function(start, end, allDay) {
+				var start_time = $.fullCalendar.formatDate(start, 'dd-MM-yyyy HH:mm:ss');
+				var end_time   = $.fullCalendar.formatDate(end, 'dd-MM-yyyy HH:mm:ss');
+				
+				$.ajax({
+				  url:    	'/calendar/ajax_add_form',
+				  data: 	"start="+start_time+"&end="+end_time,
+				  type:   	'post',
+				  success: function(form)
+				  {
+				    $("#configdialog").html(form);
+				  }
+				});
+				
 				$("#configdialog").dialog("open");
 				$("#configdialog").dialog({
 				  close: function(event, ui) {
-				    var start_time = $.fullCalendar.formatDate(start, 'dd-MM-yyyy HH:mm:ss');
-				    var end_time   = $.fullCalendar.formatDate(end, 'dd-MM-yyyy HH:mm:ss');
 				    var category = $("select#dialogcategory :selected").val();
 				    var private = false;
 				    if($("select#dialogcategory :selected").text() == "Приватное")
@@ -67,13 +78,13 @@ $(document).ready(function() {
 				      private = true;
 				    }
 				    
-				    var title = $("input#dialogtitle").val();
-
+				    var title = $("#title").val();
+				    var data  = $("#eventform").serialize();
 				    if (title) 
 				    {
 				      $.ajax({
 				      url:    	'/calendar/ajax_add',
-				      data: 	"title="+title+"&start="+start_time+"&end="+end_time+"&allDay="+allDay+"&category="+category+"&private="+private,
+				      data: 	data,
 				      type:   	'post',
 				      success: function(json)
 				      {
@@ -107,6 +118,7 @@ $(document).ready(function() {
 				      }
 				    })
 				  };
+				  $("#configdialog").html("<i>Минуточку...</i>");
 				}
 			      })
 			    calendar.fullCalendar('unselect');
@@ -157,22 +169,17 @@ $(document).ready(function() {
 {/literal}
 <h1 class="con_heading">Календарь</h1>
 {if !$guest}
-<a href="/calendar/add.html">Добавить событие</a>
+  <style>
+    {literal}
+    #fullcalendar{
+      cursor: url('/components/calendar/images/list-add.png'),crosshair;
+    }
+    {/literal}
+  </style>
 {/if}
 <div id='fullcalendar'></div>
 {if $guest != TRUE}
   <div id="configdialog" title="Добавить мероприятие">
-    Название мероприятия: <input type="text" name="title" id="dialogtitle" style="width: 380px">
-    <br />
-    Категория: 
-    <select name="category" id="dialogcategory">
-      <option value="0">Без категории</option>
-      <option value="0">Приватное</option>
-      {if $catigories}
-	{foreach key=id item=category from=$catigories}
-	  <option value="{$category.id}">{$category.name}</option>
-	{/foreach}
-      {/if}
-    </select>
+    <i>Секундочку...</i>
   </div>
 {/if}

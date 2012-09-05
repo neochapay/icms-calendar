@@ -11,11 +11,9 @@
 {/literal}
 {if $edit}
   <div class="con_heading">Редактировать событие</div>
-{else}
-  <div class="con_heading">Создать событие</div>
 {/if}
-<form style="margin-top:15px" action="" method="post" name="addform">
-  <div style="background-color:#EBEBEB;padding:10px;width:880px">
+<form style="margin-top:15px" action="" method="post" name="addform" id="eventform">
+  <div style="padding-top:10px; padding-left:10px; padding-bottom:10px;width:100%;">
   {if $parent == 1}
     Вы создаёте вложеное событие для <b>{$parent_title}</b>. Если вложеное событие выходит за рамки основного, то его время будет автоматически изменено.
   {/if}
@@ -128,6 +126,8 @@
 	</tr>
   </table>
   <br />
-  <input type="submit" value="Сохранить запись">
+  {if $edit}
+    <input type="submit" value="Сохранить запись">
+  {/if}
 </form>
 </div>
