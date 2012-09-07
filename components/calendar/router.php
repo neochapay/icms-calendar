@@ -14,12 +14,19 @@ function routes_calendar()
       'do'    => 'view_event',
       1       => 'event_id'
   );
+  
   $routes[] = array(
       '_uri'  => '/^calendar\/delete([0-9]+).html$/i',
       'do'    => 'delete_event',
       1       => 'event_id'
   );
 
+  $routes[] = array(
+      '_uri'  => '/^calendar\/category([0-9]+).html$/i',
+      'do'    => 'category_view',
+      1       => 'category_id'
+  );  
+  
   $routes[] = array(
       '_uri'  => '/^calendar\/edit([0-9]+).html$/i',
       'do'    => 'edit_event',

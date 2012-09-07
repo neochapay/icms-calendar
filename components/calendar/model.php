@@ -116,11 +116,11 @@ class cms_model_calendar
     return true;
   }
 
-  function getCalendar($start_time, $end_time, $parent_id)
+  function getCalendar($start_time, $end_time, $category_id,$parent_id)
   {
     if($start_time and $end_time)
     {
-      $sql ="SELECT cms_events.*,
+      $sql = "SELECT cms_events.*,
       cms_events_category.name as category_name,
       cms_events_category.bg,
       cms_events_category.tx,
@@ -133,7 +133,7 @@ class cms_model_calendar
     }
     else
     {
-      $sql ="SELECT cms_events.*,
+      $sql = "SELECT cms_events.*,
       cms_events_category.name as category_name,
       cms_events_category.bg,
       cms_events_category.tx,
@@ -141,6 +141,11 @@ class cms_model_calendar
       FROM cms_events 
       LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id";
     }
+      
+    if($category_id)
+    {
+      $sql .= " AND cms_events_category.id = $category_id";
+    }    
     
     $result = $this->inDB->query($sql);
     
@@ -273,6 +278,23 @@ class cms_model_calendar
       $output[] = $row;
     }
     return $output;  
+  }
+
+  public function getCategory($id)
+  {
+    $sql ="SELECT * FROM cms_events_category WHERE id = $id";
+    $result = $this->inDB->query($sql);
+    
+    if ($this->inDB->error()) 
+    { 
+      return false; 
+    }
+      
+    if (!$this->inDB->num_rows($result)) 
+    { 
+      return false; 
+    }
+    return  $this->inDB->fetch_assoc($result);
   }
   
   public function deleteCategory($id)

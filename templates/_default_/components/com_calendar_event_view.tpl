@@ -31,7 +31,7 @@
       <li>Начало: {$start_time}</li>
       <li>Окончание: {$end_time}</li>
       {if $event.category_name}
-	<li>Категория: {$event.category_name}</li>
+	<li>Категория: <a href="/calendar/category{$event.category_id}.html">{$event.category_name}</a></li>
       {else}
 	{if $event.type == "private"}
 	  <li>Это приватное сообщение и видно только Вам.</li>
@@ -51,7 +51,7 @@
 
   </div>
   {if $admin}
-    <a href="/calendar/delete{$event.id}.html">удалить</a> | <a href="/calendar/edit{$event.id}.html">редактировать</a> | <a href="/calendar/add_parent{$event.id}.html">Добавить волженое событие</a>
+    <a href="/calendar/delete{$event.id}.html">удалить</a> | <a href="/calendar/edit{$event.id}.html">редактировать</a> | <a href="/calendar/add_parent{$event.id}.html">Добавить вложеное событие</a>
   {/if}
   {if $event.type == "public" and $status != "Прошедшее событие"}
     {if $issngnup}

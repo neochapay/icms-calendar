@@ -71,13 +71,6 @@ $(document).ready(function() {
 				$("#configdialog").dialog("open");
 				$("#configdialog").dialog({
 				  close: function(event, ui) {
-				    var category = $("select#dialogcategory :selected").val();
-				    var private = false;
-				    if($("select#dialogcategory :selected").text() == "Приватное")
-				    {
-				      private = true;
-				    }
-				    
 				    var title = $("#title").val();
 				    var data  = $("#eventform").serialize();
 				    if (title) 
@@ -104,9 +97,9 @@ $(document).ready(function() {
 					  {
 					    id: id,
 					    title: title,
-					    start: start,
-					    end: end,
-					    allDay: allDay,
+					    start: amswer.start,
+					    end: answer.end,
+					    allDay: answer.allDay,
 					    editable: true,
 					    color: answer.bg,
 					    textColor: answer.tx,
@@ -129,7 +122,10 @@ $(document).ready(function() {
 			eventSources: [
 			{
 			  url: '/calendar/ajax_get_event',
-			  type: 'POST'
+			  type: 'POST',
+			  data:{
+			    category: "{/literal}{$category}{literal}"
+			  }
 			}
 			],
 		  eventResize: function(event,dayDelta,minuteDelta,revertFunc) {

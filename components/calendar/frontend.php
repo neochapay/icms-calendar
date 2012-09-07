@@ -69,10 +69,51 @@ function calendar()
     $smarty->assign('guest', $guest);
     $smarty->assign('cfg', $cfg);
     $smarty->assign('catigories', $catigories);
+    $smarty->assign('category', "all");
     $smarty->display('com_calendar_view.tpl');
     return;
   }
 
+  if($do == "category_view")
+  {
+    $category_id = $inCore->request('category_id', 'int', 0);
+    $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
+
+    $guest = TRUE;
+    
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
+    }
+    $category = $model->getCategory($category_id);
+    
+    $catigories = $model->getAllCategories();
+    
+    if(!$category)
+    {
+      //$inCore->redirect("/calendar");
+      print mysql_error();
+    }
+    
+    $inPage->setTitle("Календарь событий:".$category['title']);
+    $smarty->assign('guest', $guest);
+    $smarty->assign('cfg', $cfg);
+    $smarty->assign('catigories', $catigories);
+    $smarty->assign('category', $category_id);
+    $smarty->display('com_calendar_view.tpl');
+    return;    
+  }
+  
   if ($do == 'add')
   {
     $guest = TRUE;
@@ -640,6 +681,14 @@ function calendar()
       }
       else
       {
+	if(is_numeric($type))
+	{
+	  $category_id = $type;
+	}
+	else
+	{
+	  $category_id = 0;
+	}
 	$type = "public";
       }
       
@@ -657,6 +706,18 @@ function calendar()
 	$output['error'] = FALSE;
 	$event = $model->getEvent($event_id);
 	$output['event_id'] = $event_id;
+	$output['start'] = date("d-m-Y H:i:s",$event['start_time']);
+	$output['end_time'] = date("d-m-Y H:i:s",$event['end_time']); //dd-MM-yyyy HH:mm:ss
+	
+	if($event['end_time']-$event['start_time'] > 60*60*8)
+	{
+	  $output['allDay'] = TRUE;
+	}
+	else
+	{
+	  $output['allDay'] = FALSE;
+	}
+	
 	$output['bg'] = $event['bg'];
 	$output['tx'] = $event['tx'];
 	
@@ -681,6 +742,7 @@ function calendar()
     print json_encode($output);
     exit;
   }
+  
   if($do == "ajax_edit")
   {
     $type_act = $inCore->request('type', 'str');
@@ -725,13 +787,19 @@ function calendar()
     $starttime = $inCore->request('start', 'int');
     $endtime = $inCore->request('end', 'int');
     $parent_id = $inCore->request('parent_id', 'parent_id');
+    $category = $inCore->request('category', 'str');
+    
+    if($category == "all" or !is_numeric($category))
+    {
+      $category = FALSE;
+    }
     
     if(!$parent_id)
     {
       $parent_id = 0;
     }
     
-    $events = $model->getCalendar($starttime, $endtime, $parent_id);
+    $events = $model->getCalendar($starttime, $endtime, $category,$parent_id);
     $output = array();
     foreach($events as $data)
     {
@@ -801,7 +869,7 @@ function calendar()
       if($event['type'] == "public")
       {
 	$title = iconv("cp1251","utf8",$event["title"]);
-	$content = iconv("cp1251","utf8",$event["content"]);
+	//$content = iconv("cp1251","utf8",str_replace("\n",'',$event["content"]));
 
 	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"])."Z";
 	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"])."Z";
@@ -810,7 +878,7 @@ function calendar()
 	echo "DTSTART:$dtstart\n";
 	echo "DTEND:$dtend\n";
 	echo "SUMMARY:$title\n";
-	echo "DESCRIPTION:$content\n";
+	//echo "DESCRIPTION:$content\n";
 	echo "END:VEVENT\n";
       }
     }
@@ -830,7 +898,9 @@ function calendar()
     }
     
     $catigories = $model->getAllCategories();
-    
+    $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
+    $smilies    = cmsPage::getSmilesPanel('message');
+      
     $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
     $smarty->assign('catigories', $catigories);
     $smarty->assign('start_date', date("d.m.Y", $start));
