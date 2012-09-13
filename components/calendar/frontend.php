@@ -706,8 +706,8 @@ function calendar()
 	$output['error'] = FALSE;
 	$event = $model->getEvent($event_id);
 	$output['event_id'] = $event_id;
-	$output['start'] = date("d-m-Y H:i:s",$event['start_time']);
-	$output['end_time'] = date("d-m-Y H:i:s",$event['end_time']); //dd-MM-yyyy HH:mm:ss
+	$output['start'] = $event['start_time'];
+	$output['end_time'] = $event['end_time'];
 	
 	if($event['end_time']-$event['start_time'] > 60*60*8)
 	{

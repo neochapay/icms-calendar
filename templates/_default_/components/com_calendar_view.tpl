@@ -97,7 +97,7 @@ $(document).ready(function() {
 					  {
 					    id: id,
 					    title: title,
-					    start: amswer.start,
+					    start: answer.start,
 					    end: answer.end,
 					    allDay: answer.allDay,
 					    editable: true,
