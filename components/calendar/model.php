@@ -184,11 +184,14 @@ class cms_model_calendar
   {
     $inUser = cmsUser::getInstance();
     $sql = "SELECT * FROM cms_events_signup WHERE event_id = {$event_id} AND user_id = ".$inUser->id;
+    /* RATMIR : ADD */
+    $result = $this->inDB->query($sql);
+    /* RATMIR : ADD END */
     if ($this->inDB->error()) 
     { 
       return false; 
     }
-    
+	
     if($this->inDB->num_rows($result))
     {
       return TRUE;
