@@ -327,6 +327,9 @@ function calendar()
       $singups_user = $model->getSingupsUsers($event_id);
 
       $inPage->setTitle('Просмотр события "'.$event['title'].'"');
+      $inPage->addPathway("Календарь", "/calendar"); 
+      $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
+      
       $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
       $smarty->assign('event', $event);
       $smarty->assign('content', $msg);
@@ -674,7 +677,7 @@ function calendar()
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
       
-      if($type == "prvate")
+      if($type == "private")
       {
 	$category_id = 0;
 	$type = "private";
@@ -869,16 +872,14 @@ function calendar()
       if($event['type'] == "public")
       {
 	$title = iconv("cp1251","utf8",$event["title"]);
-	//$content = iconv("cp1251","utf8",str_replace("\n",'',$event["content"]));
 
-	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"])."Z";
-	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"])."Z";
+	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"]);
+	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"]);
 	
 	echo "BEGIN:VEVENT\n";
 	echo "DTSTART:$dtstart\n";
 	echo "DTEND:$dtend\n";
 	echo "SUMMARY:$title\n";
-	//echo "DESCRIPTION:$content\n";
 	echo "END:VEVENT\n";
       }
     }
