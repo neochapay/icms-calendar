@@ -5,10 +5,23 @@ function routes_calendar()
       '_uri'  => '/^calendar\/view.html$/i',
       'do'    => 'view'
   );
+  
   $routes[] = array(
       '_uri'  => '/^calendar\/add.html$/i',
       'do'    => 'add'
   );
+
+  $routes[] = array(
+      '_uri'  => '/^calendar\/list.html$/i',
+      'do'    => 'list'
+  );
+
+  $routes[] = array(
+     '_uri'  => '/^calendar\/list([0-9]+).html$/i',
+     'do'    => 'list',
+     1       => 'page'
+  );
+  
   $routes[] = array(
       '_uri'  => '/^calendar\/event([0-9]+).html$/i',
       'do'    => 'view_event',

@@ -74,6 +74,16 @@ function calendar()
     return;
   }
 
+  if($do == "list")
+  {
+    $events = $model->getCalendar(time(),strtotime("NOW + 1 year"));
+    
+    $inPage->setTitle("Календарь событий");
+    $smarty = $inCore->initSmarty('components', 'com_calendar_list.tpl');
+    $smarty->assign('events', $events);
+    $smarty->display('com_calendar_list.tpl');
+  }
+  
   if($do == "category_view")
   {
     $category_id = $inCore->request('category_id', 'int', 0);

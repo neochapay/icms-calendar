@@ -57,9 +57,14 @@ class cms_model_calendar
     cms_events_category.name as category_name,
     cms_events_category.bg,
     cms_events_category.tx,
-    cms_events_category.id as category_id
+    cms_events_category.id as category_id,
+    cms_users.login,
+    cms_users.nickname,
+    cms_user_profiles.imageurl
     FROM cms_events 
     LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id
+    INNER JOIN cms_users ON cms_events.author_id = cms_users.id
+    INNER JOIN cms_user_profiles ON cms_events.author_id = cms_user_profiles.user_id
     WHERE cms_events.id = {$event_id}";
     
     $result = $this->inDB->query($sql);
@@ -129,7 +134,8 @@ class cms_model_calendar
       LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id
       WHERE cms_events.parent_id = '{$parent_id}' 
       AND cms_events.start_time > '{$start_time}'
-      AND cms_events.end_time < '{$end_time}'";
+      AND cms_events.end_time < '{$end_time}'
+      ORDER BY cms_events.start_time ASC";
     }
     else
     {
@@ -162,6 +168,8 @@ class cms_model_calendar
     $output = array();
     while ($row = $this->inDB->fetch_assoc($result))
     {
+      $row['start_date'] = date("Y-m-d H:i",$row['start_time']);
+      $row['end_date'] = date("Y-m-d H:i",$row['end_time']);
       $output[] = $row;
     }
     return $output;
@@ -232,7 +240,14 @@ class cms_model_calendar
 
   public function getSingupsUsers($event_id)
   {
-    $sql = "SELECT * FROM cms_events_signup INNER JOIN cms_users ON cms_events_signup.user_id = cms_users.id WHERE cms_events_signup.event_id = {$event_id}";
+    $sql = "SELECT cms_events_signup.*,
+    cms_users.login,
+    cms_users.nickname,
+    cms_user_profiles.imageurl
+    FROM cms_events_signup
+    INNER JOIN cms_users ON cms_events_signup.user_id = cms_users.id
+    INNER JOIN cms_user_profiles ON cms_events_signup.user_id = cms_user_profiles.user_id
+    WHERE cms_events_signup.event_id = {$event_id}";
     $result = $this->inDB->query($sql);
     if ($this->inDB->error()) { return false; }
     if (!$this->inDB->num_rows($result)) { return false; }

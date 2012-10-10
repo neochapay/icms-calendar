@@ -1,5 +1,4 @@
 .signup{
-  float: right;
   padding-left: 10px;
   padding-right: 10px;
   padding-top:5px;
@@ -7,6 +6,10 @@
   background-color: #EBEBEB;
   display: block;
   font-size: 20px;
+  border-radius: 8px;
+-moz-border-radius: 8px;
+ width: 200px;
+   text-align: center;
 }
 
 .signup A{
@@ -32,4 +35,11 @@
   text-decoration: none;
   padding-left: 15px;
   font-size: 14px;
+}
+
+.singups A{
+  display: inline-block;
+  width: 48%;
+  text-decoration: none;
+  text-align: center;
 }
