@@ -9,7 +9,7 @@ function  mod_calendar_eventview($module_id)
   
   if($inUser->id != 0 and $cfg['calendar_module'] == "user")
   {
-//Запрос к БД
+//Р—Р°РїСЂРѕСЃ Рє Р‘Р”
       $sql = "
 	SELECT cms_events.* ,
 	cms_events_category.tx,

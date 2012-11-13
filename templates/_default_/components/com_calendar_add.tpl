@@ -10,25 +10,25 @@
 </script>
 {/literal}
 {if $edit}
-  <div class="con_heading">Редактировать событие</div>
+  <div class="con_heading">Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЃРѕР±С‹С‚РёРµ</div>
 {/if}
 <form style="margin-top:15px" action="" method="post" name="addform" id="eventform">
   <div style="padding-top:10px; padding-left:10px; padding-bottom:10px;width:100%;">
   {if $parent == 1}
-    Вы создаёте вложеное событие для <b>{$parent_title}</b>. Если вложеное событие выходит за рамки основного, то его время будет автоматически изменено.
+    Р’С‹ СЃРѕР·РґР°С‘С‚Рµ РІР»РѕР¶РµРЅРѕРµ СЃРѕР±С‹С‚РёРµ РґР»СЏ <b>{$parent_title}</b>. Р•СЃР»Рё РІР»РѕР¶РµРЅРѕРµ СЃРѕР±С‹С‚РёРµ РІС‹С…РѕРґРёС‚ Р·Р° СЂР°РјРєРё РѕСЃРЅРѕРІРЅРѕРіРѕ, С‚Рѕ РµРіРѕ РІСЂРµРјСЏ Р±СѓРґРµС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёР·РјРµРЅРµРЅРѕ.
   {/if}
   <table border="0" cellspacing="0" cellpadding="4">
 	<tr>
-	  <td width="180"><strong>Заголовок: </strong></td>
+	  <td width="180"><strong>Р—Р°РіРѕР»РѕРІРѕРє: </strong></td>
 	  <td><input name="title" type="text" id="title" size="40" value="{$title}"/></td>
 	</tr>
 	{if $parent != 1}
 	<tr>
-	  <td><strong>Тип события: </strong></td>
+	  <td><strong>РўРёРї СЃРѕР±С‹С‚РёСЏ: </strong></td>
 	  <td>
 	  	  <select name="type" id="ownertype">
-		    <option value="public" {if $type == "public"}selected{/if}>Публичное</option>
-		    <option value="private" {if $type == "private"}selected{/if}>Личное</option>
+		    <option value="public" {if $type == "public"}selected{/if}>РџСѓР±Р»РёС‡РЅРѕРµ</option>
+		    <option value="private" {if $type == "private"}selected{/if}>Р›РёС‡РЅРѕРµ</option>
 		    {if $catigories}
 		      {foreach key=id item=category from=$catigories}
 			<option value="{$category.id}" {if $type == $category.id}selected{/if}>{$category.name}</option>
@@ -39,7 +39,7 @@
 	<tr>
 	{/if}
 	<tr>
-	  <td><strong>Начало:</strong></td>
+	  <td><strong>РќР°С‡Р°Р»Рѕ:</strong></td>
 	  <td>
 	    <input id="date_start" name="date_start" class="datepicker" value="{$start_date}" onChange="$('#date_end').val($('#date_start').val())"/>
 	    <select name="hour_start">
@@ -78,7 +78,7 @@
 	</td>
 	</tr>
 	<tr>
-	  <td><strong>Конец:</strong></td>
+	  <td><strong>РљРѕРЅРµС†:</strong></td>
 	  <td>
 	    <input id="date_end" name="date_end" class="datepicker"  value="{$end_date}"/>
 	    <select name="hour_end">
@@ -127,7 +127,7 @@
   </table>
   <br />
   {if $edit}
-    <input type="submit" value="Сохранить запись">
+    <input type="submit" value="РЎРѕС…СЂР°РЅРёС‚СЊ Р·Р°РїРёСЃСЊ">
   {/if}
 </form>
 </div>

@@ -16,7 +16,7 @@ function declension($digit,$expr,$onlyword=false)
 {
         if(!is_array($expr)) $expr = array_filter(explode(' ', $expr));
         if(empty($expr[2])) $expr[2]=$expr[1];
-        $i=preg_replace('/[^0-9]+/s','',$digit)%100; //intval не всегда корректно работает
+        $i=preg_replace('/[^0-9]+/s','',$digit)%100; //intval РЅРµ РІСЃРµРіРґР° РєРѕСЂСЂРµРєС‚РЅРѕ СЂР°Р±РѕС‚Р°РµС‚
         if($onlyword) $digit='';
         if($i>=5 && $i<=20) $res=$digit.' '.$expr[2];
         else
@@ -44,7 +44,7 @@ function calendar()
 
   if ($do == 'view')
   {
-    $inPage->setTitle("Календарь событий");
+    $inPage->setTitle("РљР°Р»РµРЅРґР°СЂСЊ СЃРѕР±С‹С‚РёР№");
     $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
 
     $guest = TRUE;
@@ -78,7 +78,7 @@ function calendar()
   {
     $events = $model->getCalendar(time(),strtotime("NOW + 1 year"));
     
-    $inPage->setTitle("Календарь событий");
+    $inPage->setTitle("РљР°Р»РµРЅРґР°СЂСЊ СЃРѕР±С‹С‚РёР№");
     $smarty = $inCore->initSmarty('components', 'com_calendar_list.tpl');
     $smarty->assign('events', $events);
     $smarty->display('com_calendar_list.tpl');
@@ -115,7 +115,7 @@ function calendar()
       print mysql_error();
     }
     
-    $inPage->setTitle("Календарь событий:".$category['title']);
+    $inPage->setTitle("РљР°Р»РµРЅРґР°СЂСЊ СЃРѕР±С‹С‚РёР№:".$category['title']);
     $smarty->assign('guest', $guest);
     $smarty->assign('cfg', $cfg);
     $smarty->assign('catigories', $catigories);
@@ -163,7 +163,7 @@ function calendar()
       $content = $inCore->request('content', 'str');
       if(!$title || !$type_raw || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
       {
-      	cmsCore::addSessionMessage('Ой, что то не было заполнено...', 'error');
+      	cmsCore::addSessionMessage('РћР№, С‡С‚Рѕ С‚Рѕ РЅРµ Р±С‹Р»Рѕ Р·Р°РїРѕР»РЅРµРЅРѕ...', 'error');
 	$inCore->redirectBack();
 	exit;
       }
@@ -186,7 +186,7 @@ function calendar()
 	  if($type != "private")
 	  {
 	    cmsActions::log('add_event', array(
-                'object' => 'событие',
+                'object' => 'СЃРѕР±С‹С‚РёРµ',
                 'object_url' => '/calendar/event'.$event_id.'.html',
                 'object_id'=>$event_id,
                 'target' => $title,
@@ -194,11 +194,11 @@ function calendar()
                 'target_id' => '0',
                 'description' => $title));
 	  }
-	  cmsCore::addSessionMessage('Ваше мероприятие добавлено!', 'success');
+	  cmsCore::addSessionMessage('Р’Р°С€Рµ РјРµСЂРѕРїСЂРёСЏС‚РёРµ РґРѕР±Р°РІР»РµРЅРѕ!', 'success');
 	}
  	else
  	{
-	  cmsCore::addSessionMessage('Ошибка добавления!', 'error');
+	  cmsCore::addSessionMessage('РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ!', 'error');
  	}
 	$inCore->redirect('/calendar'); exit;
       }
@@ -215,7 +215,7 @@ function calendar()
 
       $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
       $smilies    = cmsPage::getSmilesPanel('message');
-      $inPage->setTitle("Добавить событие");
+      $inPage->setTitle("Р”РѕР±Р°РІРёС‚СЊ СЃРѕР±С‹С‚РёРµ");
       $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
       $smarty->assign('bb_toolbar', $bb_toolbar);
       $smarty->assign('smilies', $smilies);
@@ -239,7 +239,7 @@ function calendar()
 /*FOTOLIB*/
     include('fotolib.class.php');
     $foto = new FotoLib();
-    //Проверяем можем ли добавлять фото
+    //РџСЂРѕРІРµСЂСЏРµРј РјРѕР¶РµРј Р»Рё РґРѕР±Р°РІР»СЏС‚СЊ С„РѕС‚Рѕ
     $allow_add_foto = $foto->addAcces("calendar");
   
     if($_FILES)
@@ -253,7 +253,7 @@ function calendar()
     $event = $model->getEvent($event_id);
     if(!$event)
     {
-      cmsCore::addSessionMessage('Ошибка запроса'.mysql_error(), 'error');
+      cmsCore::addSessionMessage('РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР°'.mysql_error(), 'error');
       $inCore->redirect('/calendar');
       exit;
     }
@@ -261,7 +261,7 @@ function calendar()
     {
       if($event['type'] == 'private' and $event['author_id'] != ($inUser->id))
       {
-        cmsCore::addSessionMessage('Ошибка запроса', 'error');
+        cmsCore::addSessionMessage('РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР°', 'error');
 	$inCore->redirect('/calendar');
 	exit;
       }
@@ -272,7 +272,7 @@ function calendar()
 	$delta = $event['end_time']-$event['start_time'];
 	
 	$day = date("d", $event['start_time']);
-	$month = date("n", $event['start_time'])-1; //Яваскриптики считают с 0
+	$month = date("n", $event['start_time'])-1; //РЇРІР°СЃРєСЂРёРїС‚РёРєРё СЃС‡РёС‚Р°СЋС‚ СЃ 0
 	$year = date("Y", $event['start_time']);
 	
 	if($delta < 24*60*60)
@@ -280,7 +280,7 @@ function calendar()
 	  $calendar_view = "agendaDay";
 	  if(date("d", $event['start_time']) != date("d", $event['end_time']))
 	  {
-	    //Если меньше 24 часов но всё же в разные дни включаем недельный вид
+	    //Р•СЃР»Рё РјРµРЅСЊС€Рµ 24 С‡Р°СЃРѕРІ РЅРѕ РІСЃС‘ Р¶Рµ РІ СЂР°Р·РЅС‹Рµ РґРЅРё РІРєР»СЋС‡Р°РµРј РЅРµРґРµР»СЊРЅС‹Р№ РІРёРґ
 	    $calendar_view = "agendaWeek";
 	  }
 	}
@@ -336,8 +336,8 @@ function calendar()
 
       $singups_user = $model->getSingupsUsers($event_id);
 
-      $inPage->setTitle('Просмотр события "'.$event['title'].'"');
-      $inPage->addPathway("Календарь", "/calendar"); 
+      $inPage->setTitle('РџСЂРѕСЃРјРѕС‚СЂ СЃРѕР±С‹С‚РёСЏ "'.$event['title'].'"');
+      $inPage->addPathway("РљР°Р»РµРЅРґР°СЂСЊ", "/calendar"); 
       $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
       
       $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
@@ -362,17 +362,17 @@ function calendar()
 
       if($event['start_time'] - time() < 0)
       {
-	$status = "Прошедшее событие";
+	$status = "РџСЂРѕС€РµРґС€РµРµ СЃРѕР±С‹С‚РёРµ";
       }
       else
       {
 	if($event['start_time']-time() > 86400)
 	{
-	  $status = 'Осталось '.declension(round(($event['start_time']-time())/86400), array("день", "дня", "дней"));
+	  $status = 'РћСЃС‚Р°Р»РѕСЃСЊ '.declension(round(($event['start_time']-time())/86400), array("РґРµРЅСЊ", "РґРЅСЏ", "РґРЅРµР№"));
 	}
 	else
 	{
-	  $status = 'Осталось '.declension(round(($event['start_time']-time())/3600), array("час", "часа", "часов"));
+	  $status = 'РћСЃС‚Р°Р»РѕСЃСЊ '.declension(round(($event['start_time']-time())/3600), array("С‡Р°СЃ", "С‡Р°СЃР°", "С‡Р°СЃРѕРІ"));
 	}
       }
       $smarty->assign('status', $status);
@@ -397,13 +397,13 @@ function calendar()
     $deleted = $model->deleteEvent($event_id);
     if($deleted)
     {
-      cmsCore::addSessionMessage('Ваше мероприятие удалено!', 'success');
+      cmsCore::addSessionMessage('Р’Р°С€Рµ РјРµСЂРѕРїСЂРёСЏС‚РёРµ СѓРґР°Р»РµРЅРѕ!', 'success');
       $inCore->redirect('/calendar');
       exit;
     }
     else
     {
-      cmsCore::addSessionMessage('Ошибка', 'error');
+      cmsCore::addSessionMessage('РћС€РёР±РєР°', 'error');
       $inCore->redirect('/calendar');
       exit;
     }
@@ -421,7 +421,7 @@ function calendar()
     if($event["author_id"] != $inUser->id and !$inUser->is_admin)
     {
 
-      	cmsCore::addSessionMessage('Ошибка доступа', 'error');
+      	cmsCore::addSessionMessage('РћС€РёР±РєР° РґРѕСЃС‚СѓРїР°', 'error');
 	$inCore->redirectBack();
 	exit;
     }
@@ -441,7 +441,7 @@ function calendar()
       $content = $inCore->request('content', 'str');
       if(!$title || !$type || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
       {
-      	cmsCore::addSessionMessage('Ой, что то не было заполнено...', 'error');
+      	cmsCore::addSessionMessage('РћР№, С‡С‚Рѕ С‚Рѕ РЅРµ Р±С‹Р»Рѕ Р·Р°РїРѕР»РЅРµРЅРѕ...', 'error');
 	$inCore->redirectBack();
 	exit;
       }
@@ -467,13 +467,13 @@ function calendar()
 	$update = $model->updateEvent($event_id,$type,$category_id,$start_time,$end_time,$title,$content);
 	if($update)
 	{
-	  cmsCore::addSessionMessage('Ваше мероприятие изменено!', 'success');
+	  cmsCore::addSessionMessage('Р’Р°С€Рµ РјРµСЂРѕРїСЂРёСЏС‚РёРµ РёР·РјРµРЅРµРЅРѕ!', 'success');
 	  $inCore->redirect('/calendar/event'.$event_id.'.html');
 	  exit;
 	}
 	else
 	{
-	  cmsCore::addSessionMessage('Ошибка добавления!', 'error');
+	  cmsCore::addSessionMessage('РћС€РёР±РєР° РґРѕР±Р°РІР»РµРЅРёСЏ!', 'error');
 	  $inCore->redirect('/calendar/edit'.$event_id.'.html');
 	  exit;
 	}
@@ -484,7 +484,7 @@ function calendar()
       $event = $model->getEvent($event_id);
       if(!$event)
       {
-	cmsCore::addSessionMessage('Ошибка запроса', 'error');
+	cmsCore::addSessionMessage('РћС€РёР±РєР° Р·Р°РїСЂРѕСЃР°', 'error');
 	$inCore->redirect('/calendar');
 	exit;
       }
@@ -495,11 +495,11 @@ function calendar()
       }
       $bb_toolbar = cmsPage::getBBCodeToolbar('calendar',1, 'forum');
       $smilies    = cmsPage::getSmilesPanel('calendar');
-//Проверяем присоедиялся ли пользователь ко встрече
+//РџСЂРѕРІРµСЂСЏРµРј РїСЂРёСЃРѕРµРґРёСЏР»СЃСЏ Р»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РєРѕ РІСЃС‚СЂРµС‡Рµ
 
       $catigories = $model->getAllCategories();
 
-      $inPage->setTitle("Редактировать событие");
+      $inPage->setTitle("Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ СЃРѕР±С‹С‚РёРµ");
       $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
       $smarty->assign('event', $event);
       $smarty->assign('edit', 1);
@@ -551,7 +551,7 @@ function calendar()
       $content = $inCore->request('content', 'str');
       if(!$title || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
       {
-      	cmsCore::addSessionMessage('Ой, что то не было заполнено...', 'error');
+      	cmsCore::addSessionMessage('РћР№, С‡С‚Рѕ С‚Рѕ РЅРµ Р±С‹Р»Рѕ Р·Р°РїРѕР»РЅРµРЅРѕ...', 'error');
 	$inCore->redirectBack();
 	exit;
       }
@@ -572,7 +572,7 @@ function calendar()
 
     $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
     $smilies    = cmsPage::getSmilesPanel('message');
-    $inPage->setTitle("Добавить вложеное событие");
+    $inPage->setTitle("Р”РѕР±Р°РІРёС‚СЊ РІР»РѕР¶РµРЅРѕРµ СЃРѕР±С‹С‚РёРµ");
     $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
@@ -593,7 +593,7 @@ function calendar()
   
   if($do == "event_signup")
   {
-//Если не залогинились то возвращаем обратно
+//Р•СЃР»Рё РЅРµ Р·Р°Р»РѕРіРёРЅРёР»РёСЃСЊ С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµРј РѕР±СЂР°С‚РЅРѕ
     if($inUser->id == 0)
     {
       $inCore->redirectBack();
@@ -601,26 +601,26 @@ function calendar()
     }
     $event_id = $inCore->request('event_id', 'int', 0);
     $event = $model->getEvent($event_id);
-//Если приватное событие то отправляем обратно
+//Р•СЃР»Рё РїСЂРёРІР°С‚РЅРѕРµ СЃРѕР±С‹С‚РёРµ С‚Рѕ РѕС‚РїСЂР°РІР»СЏРµРј РѕР±СЂР°С‚РЅРѕ
     if($event["type"] == "private")
     {
       $inCore->redirectBack();
       return;
     }
-//Если мероприятие уже прошло говорим ай-яй-яй
+//Р•СЃР»Рё РјРµСЂРѕРїСЂРёСЏС‚РёРµ СѓР¶Рµ РїСЂРѕС€Р»Рѕ РіРѕРІРѕСЂРёРј Р°Р№-СЏР№-СЏР№
     if($event['start_time'] - time() < 0)
     {
-      cmsCore::addSessionMessage('Присоединиться к мероприятию уже невозможно', 'error');
+      cmsCore::addSessionMessage('РџСЂРёСЃРѕРµРґРёРЅРёС‚СЊСЃСЏ Рє РјРµСЂРѕРїСЂРёСЏС‚РёСЋ СѓР¶Рµ РЅРµРІРѕР·РјРѕР¶РЅРѕ', 'error');
       $inCore->redirectBack();
       exit;
     }
-//Проверяем статус присоединения ко встрече
+//РџСЂРѕРІРµСЂСЏРµРј СЃС‚Р°С‚СѓСЃ РїСЂРёСЃРѕРµРґРёРЅРµРЅРёСЏ РєРѕ РІСЃС‚СЂРµС‡Рµ
     if($model->isSignup($event_id))
     {
-//Если уже присоединялись то удаляем и выводим статус
+//Р•СЃР»Рё СѓР¶Рµ РїСЂРёСЃРѕРµРґРёРЅСЏР»РёСЃСЊ С‚Рѕ СѓРґР°Р»СЏРµРј Рё РІС‹РІРѕРґРёРј СЃС‚Р°С‚СѓСЃ
       $model->deleteSignup($event_id);
-      cmsCore::addSessionMessage('Вы отказались от участия в мероприятии '.$event["title"], 'success');
-// Добавляем событие в ленту
+      cmsCore::addSessionMessage('Р’С‹ РѕС‚РєР°Р·Р°Р»РёСЃСЊ РѕС‚ СѓС‡Р°СЃС‚РёСЏ РІ РјРµСЂРѕРїСЂРёСЏС‚РёРё '.$event["title"], 'success');
+// Р”РѕР±Р°РІР»СЏРµРј СЃРѕР±С‹С‚РёРµ РІ Р»РµРЅС‚Сѓ
       cmsActions::log('del_signup', array(
                 'object' =>  $event["title"],
                 'object_url' => '/calendar/event'.$event_id.'.html',
@@ -634,11 +634,11 @@ function calendar()
     }
     else
     {
-//Если не присоединялись то добавляем в базу и выводим статус
-//Если уже присоединялись то удаляем и выводим статус
+//Р•СЃР»Рё РЅРµ РїСЂРёСЃРѕРµРґРёРЅСЏР»РёСЃСЊ С‚Рѕ РґРѕР±Р°РІР»СЏРµРј РІ Р±Р°Р·Сѓ Рё РІС‹РІРѕРґРёРј СЃС‚Р°С‚СѓСЃ
+//Р•СЃР»Рё СѓР¶Рµ РїСЂРёСЃРѕРµРґРёРЅСЏР»РёСЃСЊ С‚Рѕ СѓРґР°Р»СЏРµРј Рё РІС‹РІРѕРґРёРј СЃС‚Р°С‚СѓСЃ
       $model->addSignup($event["id"]);
-      cmsCore::addSessionMessage('Вы присоединились к событию '.$event["title"], 'success');
-// Добавляем событие в ленту
+      cmsCore::addSessionMessage('Р’С‹ РїСЂРёСЃРѕРµРґРёРЅРёР»РёСЃСЊ Рє СЃРѕР±С‹С‚РёСЋ '.$event["title"], 'success');
+// Р”РѕР±Р°РІР»СЏРµРј СЃРѕР±С‹С‚РёРµ РІ Р»РµРЅС‚Сѓ
       cmsActions::log('add_signup', array(
                 'object' =>  $event["title"],
                 'object_url' => '/calendar/event'.$event_id.'.html',
@@ -674,7 +674,7 @@ function calendar()
   
     if(!$guest)
     {
-      $title = iconv("utf8","cp1251",$inCore->request('title', 'str'));
+      $title = $inCore->request('title', 'str');
       $type = $inCore->request('type', 'str');
       $date_start = $inCore->request('date_start', 'str');
       $date_end = $inCore->request('date_end', 'str');
@@ -682,7 +682,7 @@ function calendar()
       $hour_end = $inCore->request('hour_end', 'str');
       $min_start = $inCore->request('min_start', 'str');
       $min_end = $inCore->request('min_end', 'str');
-      $content = iconv("utf8","cp1251",$inCore->request('content', 'str'));
+      $content = $inCore->request('content', 'str');
       
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
@@ -712,7 +712,7 @@ function calendar()
       if(!$event_id)
       {
 	$output['error'] = TRUE;
-	$output['errortext'] = iconv("CP1251","UTF-8","Ошибка БД");
+	$output['errortext'] = "РћС€РёР±РєР° Р‘Р”";
       }
       else
       {
@@ -737,7 +737,7 @@ function calendar()
 	if($type != "private")
 	{
 	  cmsActions::log('add_event', array(
-              'object' => 'событие',
+              'object' => 'СЃРѕР±С‹С‚РёРµ',
               'object_url' => '/calendar/event'.$event_id.'.html',
               'object_id'=>$event_id,
               'target' => $title,
@@ -750,7 +750,7 @@ function calendar()
     else
     {
       $output['error'] = TRUE;
-      $output['errortext'] = iconv("CP1251","UTF-8","Ошибка доступа");    
+      $output['errortext'] = "РћС€РёР±РєР° РґРѕСЃС‚СѓРїР°";
     }
     print json_encode($output);
     exit;
@@ -789,7 +789,7 @@ function calendar()
     }
     else
     {
-      print "Ошибка доступа";
+      print "РћС€РёР±РєР° РґРѕСЃС‚СѓРїР°";
     }
     exit;
   }
@@ -816,7 +816,6 @@ function calendar()
     $output = array();
     foreach($events as $data)
     {
-      $data['title'] = iconv("cp1251","utf8",$data["title"]);
       $data['start'] = date("Y-m-d H:i:s",$data["start_time"]);
       $data['end'] = date("Y-m-d H:i:s",$data["end_time"]);
       $data['url'] = "/calendar/event".$data['id'].".html";
@@ -881,7 +880,7 @@ function calendar()
     {
       if($event['type'] == "public")
       {
-	$title = iconv("cp1251","utf8",$event["title"]);
+	$title = $event["title"];
 
 	$dtstart = date("Ymd",$event["start_time"])."T".date("His",$event["start_time"]);
 	$dtend = date("Ymd",$event["end_time"])."T".date("His",$event["end_time"]);
@@ -904,7 +903,7 @@ function calendar()
     
     if(!$inUser->id)
     {
-      print "Ошибка доступа.";
+      print "РћС€РёР±РєР° РґРѕСЃС‚СѓРїР°.";
       exit;
     }
     

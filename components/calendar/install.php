@@ -1,9 +1,9 @@
 <?php
     function info_component_calendar(){
-        $_component['title']        = 'Календарь';
-        $_component['description']  = 'Календарь';
+        $_component['title']        = 'РљР°Р»РµРЅРґР°СЂСЊ';
+        $_component['description']  = 'РљР°Р»РµРЅРґР°СЂСЊ';
         $_component['link']         = 'calendar';
-        $_component['author']       = 'Сергей Игоревич (NeoChapay)';
+        $_component['author']       = 'РЎРµСЂРіРµР№ РРіРѕСЂРµРІРёС‡ (NeoChapay)';
         $_component['internal']     = '0';
         $_component['version']      = '0.4.0';
         $inCore = cmsCore::getInstance();
@@ -26,8 +26,8 @@
 	  cmsActions::registerAction('calendar',
           array(
 	    'name'=>'add_event',
-            'title'=>'Добавление события',
-            'message'=>'добавляет %s| %s'
+            'title'=>'Р”РѕР±Р°РІР»РµРЅРёРµ СЃРѕР±С‹С‚РёСЏ',
+            'message'=>'РґРѕР±Р°РІР»СЏРµС‚ %s| %s'
 	    )
           );
         }
@@ -37,8 +37,8 @@
 	  cmsActions::registerAction('calendar',
           array(
 	    'name'=>'add_signup',
-            'title'=>'Присоединение к встрече',
-            'message'=>'будет учавствовать в %s|'
+            'title'=>'РџСЂРёСЃРѕРµРґРёРЅРµРЅРёРµ Рє РІСЃС‚СЂРµС‡Рµ',
+            'message'=>'Р±СѓРґРµС‚ СѓС‡Р°РІСЃС‚РІРѕРІР°С‚СЊ РІ %s|'
             )
           );
         }
@@ -48,8 +48,8 @@
 	  cmsActions::registerAction('calendar',
           array(
 	    'name'=>'del_signup',
-            'title'=>'Отказ от участия во встрече',
-            'message'=>'не будет учавствовать в %s|'
+            'title'=>'РћС‚РєР°Р· РѕС‚ СѓС‡Р°СЃС‚РёСЏ РІРѕ РІСЃС‚СЂРµС‡Рµ',
+            'message'=>'РЅРµ Р±СѓРґРµС‚ СѓС‡Р°РІСЃС‚РІРѕРІР°С‚СЊ РІ %s|'
             )
           );
         }

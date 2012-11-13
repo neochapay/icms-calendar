@@ -19,19 +19,19 @@
 	},
 	editable: false,
 	buttonText: {
-	  today:    'сегодня',
-	  month:    'месяц',
-	  week:     'неделя',
-	  day:      'день'
+	  today:    'СЃРµРіРѕРґРЅСЏ',
+	  month:    'РјРµСЃСЏС†',
+	  week:     'РЅРµРґРµР»СЏ',
+	  day:      'РґРµРЅСЊ'
 	},
 	year: {/literal}{$year}{literal},
 	month: {/literal}{$month}{literal},
 	date: {/literal}{$day}{literal},
-	monthNamesShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-	monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-	dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-	dayNames:['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-	allDayText: 'весь день',
+	monthNamesShort: ['РЇРЅРІ', 'Р¤РµРІСЂ', 'РњР°СЂС‚', 'РђРїСЂ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРі', 'РЎРµРЅ', 'РћРєС‚', 'РќРѕСЏ', 'Р”РµРє'],
+	monthNames: ['РЇРЅРІР°СЂСЊ', 'Р¤РµРІСЂР°Р»СЊ', 'РњР°СЂС‚', 'РђРїСЂРµР»СЊ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРіСѓСЃС‚', 'РЎРµРЅС‚СЏР±СЂСЊ', 'РћРєС‚СЏР±СЂСЊ', 'РќРѕСЏР±СЂСЊ', 'Р”РµРєР°Р±СЂСЊ'],
+	dayNamesShort: ['Р’СЃ', 'РџРЅ', 'Р’С‚', 'РЎСЂ', 'Р§С‚', 'РџС‚', 'РЎР±'],
+	dayNames:['Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ', 'РџРѕРЅРµРґРµР»СЊРЅРёРє', 'Р’С‚РѕСЂРЅРёРє', 'РЎСЂРµРґР°', 'Р§РµС‚РІРµСЂРі', 'РџСЏС‚РЅРёС†Р°', 'РЎСѓР±Р±РѕС‚Р°'],
+	allDayText: 'РІРµСЃСЊ РґРµРЅСЊ',
 	axisFormat: 'H:mm',
 	defaultView: '{/literal}{$calendar_view}{literal}',
 	firstDay: '1',
@@ -69,7 +69,7 @@
     <td valign="top" class="left">
       <div class="members_list">
 	<div class="title">
-	  Организатор:
+	  РћСЂРіР°РЅРёР·Р°С‚РѕСЂ:
 	</div>
 	<div class="list" style="text-align: center;">
 	  <a href="/users/{$event.login}">
@@ -78,15 +78,15 @@
 	  </a>
 	</div>
       </div>
-      {if $event.type == "public" and $status != "Прошедшее событие"}
+      {if $event.type == "public" and $status != "РџСЂРѕС€РµРґС€РµРµ СЃРѕР±С‹С‚РёРµ"}
 	{if $issngnup}
-	  <div class="signup"><a href="/calendar/signup{$event.id}.html">Отказаться</a></div>
+	  <div class="signup"><a href="/calendar/signup{$event.id}.html">РћС‚РєР°Р·Р°С‚СЊСЃСЏ</a></div>
 	{else}
-	  <div class="signup"><a href="/calendar/signup{$event.id}.html">Присоединиться</a></div>
+	  <div class="signup"><a href="/calendar/signup{$event.id}.html">РџСЂРёСЃРѕРµРґРёРЅРёС‚СЊСЃСЏ</a></div>
 	{/if}
       {/if}
       <div class="members_list">
-	<div class="title">Участники встречи:</div>
+	<div class="title">РЈС‡Р°СЃС‚РЅРёРєРё РІСЃС‚СЂРµС‡Рё:</div>
 	<div class="list singups">
 	  {foreach key=id item=user from=$singups_user}
 	    <a href="/users/{$user.login}">
@@ -106,15 +106,15 @@
 	  {$content}
 	  <br /><br />
 	  <ul>
-	    <li>Начало: {$start_time}</li>
-	    <li>Окончание: {$end_time}</li>
+	    <li>РќР°С‡Р°Р»Рѕ: {$start_time}</li>
+	    <li>РћРєРѕРЅС‡Р°РЅРёРµ: {$end_time}</li>
 	    {if $event.category_name}
-	      <li>Категория: <a href="/calendar/category{$event.category_id}.html">{$event.category_name}</a></li>
+	      <li>РљР°С‚РµРіРѕСЂРёСЏ: <a href="/calendar/category{$event.category_id}.html">{$event.category_name}</a></li>
 	    {else}
 	      {if $event.type == "private"}
-		<li>Это приватное сообщение и видно только Вам.</li>
+		<li>Р­С‚Рѕ РїСЂРёРІР°С‚РЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ Рё РІРёРґРЅРѕ С‚РѕР»СЊРєРѕ Р’Р°Рј.</li>
 	      {else}
-		<li>Без категории.</li>
+		<li>Р‘РµР· РєР°С‚РµРіРѕСЂРёРё.</li>
 	      {/if}
 	    {/if}
 	  </ul>
@@ -122,14 +122,14 @@
       </div>
       	<div class="clubcontent">
 	  <div class="album">
-	    <div class="title"><a>Фотографии</a></div>
+	    <div class="title"><a>Р¤РѕС‚РѕРіСЂР°С„РёРё</a></div>
 	  </div>
 	  <div class="content">
 	  <!-- FOTOLIB -->
 	    {if $images or $allow_add_foto}
 	      <div class="arround" id="fotolib_img">
 	    {/if}
-	    <!-- Сами фото -->
+	    <!-- РЎР°РјРё С„РѕС‚Рѕ -->
 	    {if $images}
 	      <ul>
 		{foreach key=id item=image from=$images}
@@ -157,15 +157,15 @@
 	      {/foreach}
 	    </ul>
 	  {/if}
-	  <!-- Форма добавления -->
+	  <!-- Р¤РѕСЂРјР° РґРѕР±Р°РІР»РµРЅРёСЏ -->
 	  {if $allow_add_foto}
 	    <form action="" method="POST" enctype="multipart/form-data">
-	      <legend>Загрузить изображение</legend>
+	      <legend>Р—Р°РіСЂСѓР·РёС‚СЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ</legend>
 	      <div id="inputs">
 		<input type="file" name="file_0"><br />
 	      </div>
 	      <a onClick="addFile()">[+]</a><br/>
-	      <input type="submit" value="Отправить">
+	      <input type="submit" value="РћС‚РїСЂР°РІРёС‚СЊ">
 	    </form>
 	  {/if}
 	  {if $images or $allow_add_foto}
@@ -175,7 +175,7 @@
 	<br />
 	{if $parent}
 	  <div class="album">
-	    <div class="title"><a>Календарь мероприятия</a></div>
+	    <div class="title"><a>РљР°Р»РµРЅРґР°СЂСЊ РјРµСЂРѕРїСЂРёСЏС‚РёСЏ</a></div>
 	  </div>
 	  <div class="content">
 	    <div id="calendar"></div>
@@ -187,7 +187,7 @@
 </table>
 
 {if $parent}
-  <h1>Календарь мероприятия:</h1>
+  <h1>РљР°Р»РµРЅРґР°СЂСЊ РјРµСЂРѕРїСЂРёСЏС‚РёСЏ:</h1>
   {add_js file="components/calendar/js/jquery-ui-1.8.23.custom.min.js"}
   {add_css file="components/calendar/css/fullcalendar.css"}
   {add_js file="components/calendar/js/fullcalendar.js"}
@@ -203,19 +203,19 @@
 			},
 			editable: false,
 						buttonText: {
-			today:    'сегодня',
-			month:    'месяц',
-			week:     'неделя',
-			day:      'день'
+			today:    'СЃРµРіРѕРґРЅСЏ',
+			month:    'РјРµСЃСЏС†',
+			week:     'РЅРµРґРµР»СЏ',
+			day:      'РґРµРЅСЊ'
 			},
 			year: {/literal}{$year}{literal},
 			month: {/literal}{$month}{literal},
 			date: {/literal}{$day}{literal},
-			monthNamesShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-			monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-			dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-			dayNames:['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-			allDayText: 'весь день',
+			monthNamesShort: ['РЇРЅРІ', 'Р¤РµРІСЂ', 'РњР°СЂС‚', 'РђРїСЂ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРі', 'РЎРµРЅ', 'РћРєС‚', 'РќРѕСЏ', 'Р”РµРє'],
+			monthNames: ['РЇРЅРІР°СЂСЊ', 'Р¤РµРІСЂР°Р»СЊ', 'РњР°СЂС‚', 'РђРїСЂРµР»СЊ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРіСѓСЃС‚', 'РЎРµРЅС‚СЏР±СЂСЊ', 'РћРєС‚СЏР±СЂСЊ', 'РќРѕСЏР±СЂСЊ', 'Р”РµРєР°Р±СЂСЊ'],
+			dayNamesShort: ['Р’СЃ', 'РџРЅ', 'Р’С‚', 'РЎСЂ', 'Р§С‚', 'РџС‚', 'РЎР±'],
+			dayNames:['Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ', 'РџРѕРЅРµРґРµР»СЊРЅРёРє', 'Р’С‚РѕСЂРЅРёРє', 'РЎСЂРµРґР°', 'Р§РµС‚РІРµСЂРі', 'РџСЏС‚РЅРёС†Р°', 'РЎСѓР±Р±РѕС‚Р°'],
+			allDayText: 'РІРµСЃСЊ РґРµРЅСЊ',
 			axisFormat: 'H:mm',
 			defaultView: '{/literal}{$calendar_view}{literal}',
 			firstDay: '1',

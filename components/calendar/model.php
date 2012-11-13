@@ -6,12 +6,27 @@ class cms_model_calendar
   function __construct()
   {
     $this->inDB = cmsDatabase::getInstance();
+    $this->config = cmsCore::getInstance()->loadComponentConfig('calendar');
   }
 
-  function getDefaultConfig()
-  {
-  
-  }
+    public static function getDefaultConfig() {
+
+        $cfg = array (
+		'calendar_view'=> 'agendaWeek',
+		'calendar_access' => 'admin',
+		'maps_image_acces' => 'admin',
+		'maps_image_original' => '1',
+		'private_bg_color' => '#3366CC',
+		'private_tx_color' => '#000000',
+		'public_bg_color' => '#C3BCB9',
+		'public_tx_color' => '#000000',
+		'calendar_module' => 'all',
+		'calendar_module_count' => '5'
+		);
+
+        return $cfg;
+
+    }
 
   function addEvent($author_id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id = 0)
   {

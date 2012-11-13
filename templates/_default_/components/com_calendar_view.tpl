@@ -18,11 +18,11 @@ $(document).ready(function() {
 			modal: true,
 			autoOpen: false,
 			buttons: {
-			  Отменить: function() {
+			  РћС‚РјРµРЅРёС‚СЊ: function() {
 			    $("#dialogtitle").val("");
 			    $(this).dialog("close");
 			  },
-			  Сохранить: function() {
+			  РЎРѕС…СЂР°РЅРёС‚СЊ: function() {
 			    $(this).dialog("close");
 			  }			  
 			}
@@ -35,16 +35,16 @@ $(document).ready(function() {
 				right: 'month,agendaWeek,agendaDay'
 			},
 			buttonText: {
-			today:    'сегодня',
-			month:    'месяц',
-			week:     'неделя',
-			day:      'день'
+			today:    'СЃРµРіРѕРґРЅСЏ',
+			month:    'РјРµСЃСЏС†',
+			week:     'РЅРµРґРµР»СЏ',
+			day:      'РґРµРЅСЊ'
 			},
-			monthNamesShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-			monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-			dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-			dayNames:['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-			allDayText: 'весь день',
+			monthNamesShort: ['РЇРЅРІ', 'Р¤РµРІСЂ', 'РњР°СЂС‚', 'РђРїСЂ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРі', 'РЎРµРЅ', 'РћРєС‚', 'РќРѕСЏ', 'Р”РµРє'],
+			monthNames: ['РЇРЅРІР°СЂСЊ', 'Р¤РµРІСЂР°Р»СЊ', 'РњР°СЂС‚', 'РђРїСЂРµР»СЊ', 'РњР°Р№', 'РСЋРЅСЊ', 'РСЋР»СЊ', 'РђРІРіСѓСЃС‚', 'РЎРµРЅС‚СЏР±СЂСЊ', 'РћРєС‚СЏР±СЂСЊ', 'РќРѕСЏР±СЂСЊ', 'Р”РµРєР°Р±СЂСЊ'],
+			dayNamesShort: ['Р’СЃ', 'РџРЅ', 'Р’С‚', 'РЎСЂ', 'Р§С‚', 'РџС‚', 'РЎР±'],
+			dayNames:['Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ', 'РџРѕРЅРµРґРµР»СЊРЅРёРє', 'Р’С‚РѕСЂРЅРёРє', 'РЎСЂРµРґР°', 'Р§РµС‚РІРµСЂРі', 'РџСЏС‚РЅРёС†Р°', 'РЎСѓР±Р±РѕС‚Р°'],
+			allDayText: 'РІРµСЃСЊ РґРµРЅСЊ',
 			axisFormat: 'H:mm',
 			defaultView: '{/literal}{$cfg.calendar_view}{literal}',
 			allDayDefault: false,
@@ -84,7 +84,7 @@ $(document).ready(function() {
 					var answer = jQuery.parseJSON(json);
 					if(!answer)
 					{
-					  alert('Получены неверные данные'); 
+					  alert('РџРѕР»СѓС‡РµРЅС‹ РЅРµРІРµСЂРЅС‹Рµ РґР°РЅРЅС‹Рµ'); 
 					}
 					var id = answer.event_id;
 					if(answer.error)
@@ -111,7 +111,7 @@ $(document).ready(function() {
 				      }
 				    })
 				  };
-				  $("#configdialog").html("<i>Минуточку...</i>");
+				  $("#configdialog").html("<i>РњРёРЅСѓС‚РѕС‡РєСѓ...</i>");
 				}
 			      })
 			    calendar.fullCalendar('unselect');
@@ -163,7 +163,7 @@ $(document).ready(function() {
 	});
 </script>
 {/literal}
-<h1 class="con_heading">Календарь</h1>
+<h1 class="con_heading">РљР°Р»РµРЅРґР°СЂСЊ</h1>
 {if !$guest}
   <style>
     {literal}
@@ -175,7 +175,7 @@ $(document).ready(function() {
 {/if}
 <div id='fullcalendar'></div>
 {if $guest != TRUE}
-  <div id="configdialog" title="Добавить мероприятие">
-    <i>Секундочку...</i>
+  <div id="configdialog" title="Р”РѕР±Р°РІРёС‚СЊ РјРµСЂРѕРїСЂРёСЏС‚РёРµ">
+    <i>РЎРµРєСѓРЅРґРѕС‡РєСѓ...</i>
   </div>
 {/if}
