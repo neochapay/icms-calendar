@@ -85,17 +85,26 @@
 	  <div class="signup"><a href="/calendar/signup{$event.id}.html">Присоединиться</a></div>
 	{/if}
       {/if}
-      <div class="members_list">
-	<div class="title">Участники встречи:</div>
-	<div class="list singups">
-	  {foreach key=id item=user from=$singups_user}
-	    <a href="/users/{$user.login}">
-	      <img src="/images/users/avatars/small/{$user.imageurl}"><br/>
-	      {$user.nickname}
-	    </a>
-	  {/foreach}
+      {if $singups_user}
+	<div class="members_list">
+	  <div class="title">Участники встречи:</div>
+	  <div class="list singups">
+	    {foreach key=id item=user from=$singups_user}
+	      <a href="/users/{$user.login}">
+		<img src="/images/users/avatars/small/{$user.imageurl}"><br/>
+		{$user.nickname}
+	      </a>
+	    {/foreach}
+	  </div>
 	</div>
-      </div>
+      {/if}
+      {if $admin}
+	<ul>
+	  <li><a href="/calendar/delete{$event.id}.html">удалить</a></li>
+	  <li><a href="/calendar/edit{$event.id}.html">редактировать</a></li>
+	  <li><a href="/calendar/add_parent{$event.id}.html">Добавить волженое событие</a></li>
+	</ul>
+      {/if}
     </td>
     <td valign="top">
       <div class="data">
@@ -103,8 +112,10 @@
 	  <span class="date">{$status}</span>
 	</div>
 	<div class="description">
-	  {$content}
-	  <br /><br />
+	  {if $content}
+	    {$content}
+	    <br /><br />
+	  {/if}
 	  <ul>
 	    <li>Начало: {$start_time}</li>
 	    <li>Окончание: {$end_time}</li>
@@ -131,7 +142,7 @@
 	    {/if}
 	    <!-- Сами фото -->
 	    {if $images}
-	      <ul>
+	      <ul class="fotolib">
 		{foreach key=id item=image from=$images}
 		  <li>
 		    <a href="#{$image.name}" rel="group1" class="inline">
@@ -141,12 +152,12 @@
 		      <div id="{$image.name}">
 			<img src="/images/fotolib/S_{$image.name}.jpg" class="mainimage">
 			<div id="fancybox-title" class="fancybox-title-over" style="width: 100%; display: block; ">
-			{if $image.user_id == $user.id or $is_admin == "1"}
+			{if $image.user_id == $user.id or $admin}
 			  <span id="fancybox-title-over">
 			    <div align="center">
-			      <a href="/usermaps/rotate/left/{$image.id}.html"><img src="/components/usermaps/images/object-rotate-left.png"></a>
-			      <a href="/usermaps/imagedelete/{$image.id}.html"><img src="/components/usermaps/images/window-close.png"></a>
-			      <a href="/usermaps/rotate/right/{$image.id}.html"><img src="/components/usermaps/images/object-rotate-right.png"></a>
+			      <a href="/calendar/rotate/left/{$image.id}.html"><img src="/components/calendar/images/object-rotate-left.png"></a>
+			      <a href="/calendar/imagedelete/{$image.id}.html"><img src="/components/calendar/images/window-close.png"></a>
+			      <a href="/calendar/rotate/right/{$image.id}.html"><img src="/components/calendar/images/object-rotate-right.png"></a>
 			    </div>
 			  </span>
 			{/if}
@@ -158,7 +169,7 @@
 	    </ul>
 	  {/if}
 	  <!-- Форма добавления -->
-	  {if $allow_add_foto}
+	  {if $allow_add_foto or $admin}
 	    <form action="" method="POST" enctype="multipart/form-data">
 	      <legend>Загрузить изображение</legend>
 	      <div id="inputs">
