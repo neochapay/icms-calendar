@@ -44,7 +44,7 @@ function calendar()
 
   if ($do == 'view')
   {
-    $inPage->setTitle("Календарь событий");
+//     $inPage->setTitle("Календарь событий");
     $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
 
     $guest = TRUE;
@@ -767,7 +767,7 @@ function calendar()
     if($event['author_id'] == $inUser->id)
     {
       $type = $event['type'];
-      $apx = "";
+      $category_id = $event['category_id'];
       $start_time = $event['start_time'];
       $end_time = $event['end_time'];
       $title = $event['title'];
@@ -785,7 +785,7 @@ function calendar()
       {
 	$end_time = $end_time+$delta;
       }
-      $model->updateEvent($id,$type,$apx,$start_time,$end_time,$title,$content);
+      $model->updateEvent($id,$type,$category_id,$start_time,$end_time,$title,$content);
     }
     else
     {
