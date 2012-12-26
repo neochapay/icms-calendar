@@ -119,8 +119,10 @@ class FotoLib
       $deg = "-90";
     }
     
-    $sql = mysql_query("SELECT * FROM cms_fotolib WHERE id = $image_id") or die(mysql_error());
-    $image = mysql_fetch_array($sql);
+    $sql = "SELECT * FROM cms_fotolib WHERE id = $image_id";
+    $result = $this->inDB->query($sql);
+    
+    $image = $this->inDB->fetch_assoc($result);
     if($this->inUser->id == $image['user_id'] OR $this->inUser->is_admin)
     {
       $this->RotateImg($this->root."/images/fotolib/".$image['name'].".jpg", $deg);
@@ -142,8 +144,10 @@ class FotoLib
   
   public function Delete($image_id)
   {
-    $sql = mysql_query("SELECT * FROM cms_fotolib WHERE id = $image_id") or die(mysql_error());
-    $image = mysql_fetch_array($sql);
+    $sql = "SELECT * FROM cms_fotolib WHERE id = $image_id";
+    $result = $this->inDB->query($sql);
+
+    $image = $this->inDB->fetch_assoc($result);
 
     if($this->inUser->id == $image['user_id'] OR $this->inUser->is_admin)
     {
