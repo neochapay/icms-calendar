@@ -44,7 +44,7 @@ function calendar()
 
   if ($do == 'view')
   {
-//     $inPage->setTitle("Календарь событий");
+    $inPage->setTitle("Календарь событий");
     $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
 
     $guest = TRUE;
