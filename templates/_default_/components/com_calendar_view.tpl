@@ -3,12 +3,14 @@
 {add_js file="components/calendar/js/fullcalendar.js"}
 {add_css file="components/calendar/css/fullcalendar.css"}
 {add_css file="components/calendar/css/redmond/jquery-ui-1.8.23.custom.css"}
+{add_js file="core/js/smiles.js"}
 
 {literal}
 <script type="text/javascript">
 $(document).ready(function() {
 	
 		var date = new Date();
+		var answer;
 		var d = date.getDate();
 		var m = date.getMonth();
 		var y = date.getFullYear();
@@ -47,6 +49,9 @@ $(document).ready(function() {
 			allDayText: 'весь день',
 			axisFormat: 'H:mm',
 			defaultView: '{/literal}{$cfg.calendar_view}{literal}',
+			firstHour: '{/literal}{$cfg.calendar_firstHour}{literal}',
+			minTime: '{/literal}{$cfg.calendar_minTime}{literal}',
+			maxTime: '{/literal}{$cfg.calendar_maxTime}{literal}',
 			allDayDefault: false,
 			firstDay: '1',
 {/literal}
@@ -64,11 +69,15 @@ $(document).ready(function() {
 				  type:   	'post',
 				  success: function(form)
 				  {
-				    $("#configdialog").html(form);
+				    answer = form;
+				    if(form != "error")
+				    {
+				      $("#configdialog").html(form);
+				      $("#configdialog").dialog("open");
+				    }
 				  }
 				});
 				
-				$("#configdialog").dialog("open");
 				$("#configdialog").dialog({
 				  close: function(event, ui) {
 				    var title = $("#title").val();

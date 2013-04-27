@@ -21,7 +21,10 @@ class cms_model_calendar
 		'public_bg_color' => '#C3BCB9',
 		'public_tx_color' => '#000000',
 		'calendar_module' => 'all',
-		'calendar_module_count' => '5'
+		'calendar_module_count' => '5',
+		'calendar_firstHour' => '6',
+		'calendar_minTime' => '0',
+		'calendar_maxTime' => '24'
 		);
 
         return $cfg;

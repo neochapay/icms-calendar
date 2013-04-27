@@ -1,17 +1,4 @@
 <?php
-/*
-ALTER TABLE  `cms_events` ADD  `parent_id` INT NOT NULL
-
-v 0.4 
-ALTER TABLE  `cms_events` CHANGE  `apx`  `category_id` INT NOT NULL
-CREATE TABLE IF NOT EXISTS `cms_events_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
-  `bg` text NOT NULL,
-  `tx` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 AUTO_INCREMENT=1;
-*/
 function declension($digit,$expr,$onlyword=false)
 {
         if(!is_array($expr)) $expr = array_filter(explode(' ', $expr));
@@ -687,6 +674,25 @@ function calendar()
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
       
+      if($start_hour < $cfg['calendar_minTime'])
+      {
+	$output['error'] = TRUE;
+	$output['errortext'] = "Событие начинается слишком рано";      
+      }
+      
+      if($end_hour > $cfg['calendar_maxTime'])
+      {
+	$output['error'] = TRUE;
+	$output['errortext'] = "Событие заканчивается слишком поздно";            
+      }
+      
+      if($end_hour == $cfg['calendar_maxTime'] and $end_min != 0)
+      {
+	$output['error'] = TRUE;
+	$output['errortext'] = "Событие заканчивается слишком поздно";  
+      }
+      
+      
       if($type == "private")
       {
 	$category_id = 0;
@@ -901,10 +907,31 @@ function calendar()
     $start = strtotime($inCore->request('start', 'str'));
     $end = strtotime($inCore->request('end', 'str'));
     
+    if($start < time())
+    {
+      echo 'error';
+      exit;
+    }
+    
     if(!$inUser->id)
     {
-      print "Ошибка доступа.";
+      echo "error";
       exit;
+    }
+//Коректность времени добавления
+    $start_hour = date("H", $start);
+    if($start_hour < $cfg['calendar_minTime'])
+    {
+      $start_hour = $cfg['calendar_minTime'];
+    }
+    
+    $end_hour = date("H", $end);
+    $end_min = date("i", $end);
+    
+    if($end_hour > $cfg['calendar_maxTime'])
+    {
+      $end_hour = $cfg['calendar_maxTime'];
+      $end_min = "00";
     }
     
     $catigories = $model->getAllCategories();
@@ -914,13 +941,14 @@ function calendar()
     $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
     $smarty->assign('catigories', $catigories);
     $smarty->assign('start_date', date("d.m.Y", $start));
-    $smarty->assign('start_hour', date("H", $start));
+    $smarty->assign('start_hour', $start_hour);
     $smarty->assign('start_min', date("i", $start));
     $smarty->assign('end_date', date("d.m.Y", $end));
-    $smarty->assign('end_hour', date("H", $end));
-    $smarty->assign('end_min', date("i", $end));
+    $smarty->assign('end_hour', $end_hour);
+    $smarty->assign('end_min', $end_min);
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
+    $smarty->assign('cfg', $cfg);
     $smarty->display('com_calendar_add.tpl');
     exit;
   }
