@@ -55,6 +55,9 @@
 		      PRIMARY KEY (`id`)
 		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
         
+        $inDB->query("INSERT INTO cms_comment_targets (target, component, title)
+		      VALUES ('calendar', 'calendar', 'Календарь')");
+
         if(!cmsActions::getAction('add_event'))
 	{
 	  cmsActions::registerAction('calendar',
