@@ -402,13 +402,13 @@ function calendar()
     {
       $inCore->redirect('/'); exit;
     }
+    
     $event_id = $inCore->request('event_id', 'int', 0);
     $event = $model->getEvent($event_id);
 
-    if($event["author_id"] != $inUser->id and !$inUser->is_admin)
+    if($event["author_id"] != $inUser->id or !$inUser->is_admin)
     {
-
-      	cmsCore::addSessionMessage('Ошибка доступа', 'error');
+	cmsCore::addSessionMessage('Ошибка доступа', 'error');
 	$inCore->redirectBack();
 	exit;
     }
@@ -490,6 +490,7 @@ function calendar()
       $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
       $smarty->assign('event', $event);
       $smarty->assign('edit', 1);
+      $smarty->assign('cfg', $cfg);
       $smarty->assign('catigories', $catigories);
       $smarty->assign('title', $event['title']);
       $smarty->assign('content', $event['content']);
