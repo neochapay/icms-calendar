@@ -127,6 +127,8 @@
 	</tr>
   </table>
   <br />
-  <input type="submit" value="Сохранить запись">
+  {if $edit}
+    <input type="submit" value="Сохранить запись">
+  {/if}
 </form>
 </div>

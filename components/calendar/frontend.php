@@ -571,6 +571,7 @@ function calendar()
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
     $smarty->assign('parent', "1");
+    $smarty->assign('edit', "1");
     $smarty->assign('parent_title', $event['title']);
     $smarty->assign('title', "");
     $smarty->assign('cfg', $cfg);
