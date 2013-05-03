@@ -238,6 +238,7 @@ function calendar()
 /*FOTOLIB*/    
     
     $event = $model->getEvent($event_id);
+
     if(!$event)
     {
       cmsCore::addSessionMessage('Ошибка запроса'.mysql_error(), 'error');
@@ -325,6 +326,11 @@ function calendar()
 
       $inPage->setTitle('Просмотр события "'.$event['title'].'"');
       $inPage->addPathway("Календарь", "/calendar"); 
+      if($event['parent_id'])
+      {
+	$parent = $model->getEvent($event['parent_id']);
+	$inPage->addPathway($parent['title'], "/calendar/event".$parent['id'].".html"); 
+      }
       $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
       
       $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
