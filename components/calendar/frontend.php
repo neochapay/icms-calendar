@@ -567,6 +567,7 @@ function calendar()
     $smarty->assign('parent', "1");
     $smarty->assign('parent_title', $event['title']);
     $smarty->assign('title', "");
+    $smarty->assign('cfg', $cfg);
     $smarty->assign('content', "");
     $smarty->assign('type', $event['type']);
     $smarty->assign('start_date', date("d.m.Y", $event['start_time']));
