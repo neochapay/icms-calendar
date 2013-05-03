@@ -146,11 +146,11 @@
 		{foreach key=id item=image from=$images}
 		  <li>
 		    <a href="#{$image.name}" rel="group1" class="inline">
-		      <img src="/images/fotolib/L_{$image.name}.jpg">
+		      <img src="/upload/userfiles/L_{$image.name}.jpg">
 		    </a>
 		    <div style="display:none" class="fbinline">
 		      <div id="{$image.name}">
-			<img src="/images/fotolib/S_{$image.name}.jpg" class="mainimage">
+			<img src="/upload/userfiles/S_{$image.name}.jpg" class="mainimage">
 			<div id="fancybox-title" class="fancybox-title-over" style="width: 100%; display: block; ">
 			{if $image.user_id == $user.id or $admin}
 			  <span id="fancybox-title-over">

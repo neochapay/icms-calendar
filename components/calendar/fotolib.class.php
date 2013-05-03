@@ -1,14 +1,14 @@
 <?php
 /*
-FOTOLIB - êîíöåïöèÿ îáðàáîòêè ôîòîê â êîìïîíåíòàõ. ÍÅçàâåðø¸ííîå ðåøåíèå è âîáøå åãî áû âûãíàòü â îòäåëüíûé êîìïîíåíò.
-â ìîäåëü ïåðåäà¸òñÿ 2 ïàðàìåòðà ÒÈÏ è ID ãàëååðè. Âûäà¸òñÿ ìàñèâ. 
-Ïóòü ê ôîòîãðàôèÿì ñ÷èòàåì òàê:
-$ROOT/images/fotolib/$Ðàçìåð_$MD5îðèãèíàëà.jpg
-Ðàçìåð ìîæåò áûòü:
-S - ïðåâüþ 
-L - ðàçìåð äëÿ ïîêàçà
-îðèøèíàë - áåç ïðåôèêñà ðàçìåðà.
-AND $place['type_id'] != 1 - Çàïðåùàåì äîáàâëÿòü ôîòîãðàôèè ê òî÷êàì ïîëüçîâàòåëåé - íàäî áóäåò â áàçó âíåñòè íî ïîêà ïóñòü áóäåò òàê :)
+FOTOLIB - ÐºÐ¾Ð½Ñ†ÐµÐ¿Ñ†Ð¸Ñ Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ¸ Ñ„Ð¾Ñ‚Ð¾Ðº Ð² ÐºÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚Ð°Ñ…. ÐÐ•Ð·Ð°Ð²ÐµÑ€ÑˆÑ‘Ð½Ð½Ð¾Ðµ Ñ€ÐµÑˆÐµÐ½Ð¸Ðµ Ð¸ Ð²Ð¾Ð±ÑˆÐµ ÐµÐ³Ð¾ Ð±Ñ‹ Ð²Ñ‹Ð³Ð½Ð°Ñ‚ÑŒ Ð² Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¹ ÐºÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚.
+Ð² Ð¼Ð¾Ð´ÐµÐ»ÑŒ Ð¿ÐµÑ€ÐµÐ´Ð°Ñ‘Ñ‚ÑÑ 2 Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° Ð¢Ð˜ÐŸ Ð¸ ID Ð³Ð°Ð»ÐµÐµÑ€Ð¸. Ð’Ñ‹Ð´Ð°Ñ‘Ñ‚ÑÑ Ð¼Ð°ÑÐ¸Ð². 
+ÐŸÑƒÑ‚ÑŒ Ðº Ñ„Ð¾Ñ‚Ð¾Ð³Ñ€Ð°Ñ„Ð¸ÑÐ¼ ÑÑ‡Ð¸Ñ‚Ð°ÐµÐ¼ Ñ‚Ð°Ðº:
+$ROOT/upload/userfiles/fotolib/$Ð Ð°Ð·Ð¼ÐµÑ€_$MD5Ð¾Ñ€Ð¸Ð³Ð¸Ð½Ð°Ð»Ð°.jpg
+Ð Ð°Ð·Ð¼ÐµÑ€ Ð¼Ð¾Ð¶ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ:
+S - Ð¿Ñ€ÐµÐ²ÑŒÑŽ 
+L - Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð´Ð»Ñ Ð¿Ð¾ÐºÐ°Ð·Ð°
+Ð¾Ñ€Ð¸ÑˆÐ¸Ð½Ð°Ð» - Ð±ÐµÐ· Ð¿Ñ€ÐµÑ„Ð¸ÐºÑÐ° Ñ€Ð°Ð·Ð¼ÐµÑ€Ð°.
+AND $place['type_id'] != 1 - Ð—Ð°Ð¿Ñ€ÐµÑ‰Ð°ÐµÐ¼ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ„Ð¾Ñ‚Ð¾Ð³Ñ€Ð°Ñ„Ð¸Ð¸ Ðº Ñ‚Ð¾Ñ‡ÐºÐ°Ð¼ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹ - Ð½Ð°Ð´Ð¾ Ð±ÑƒÐ´ÐµÑ‚ Ð² Ð±Ð°Ð·Ñƒ Ð²Ð½ÐµÑÑ‚Ð¸ Ð½Ð¾ Ð¿Ð¾ÐºÐ° Ð¿ÑƒÑÑ‚ÑŒ Ð±ÑƒÐ´ÐµÑ‚ Ñ‚Ð°Ðº :)
 */
 
 class FotoLib
@@ -21,7 +21,7 @@ class FotoLib
     $this->inUser = cmsUser::getInstance();
     $this->root = $_SERVER['DOCUMENT_ROOT'];
   }
-  //Âîçâðàùàåò ìàññèâ âñåõ ôîòîê
+  //Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð¼Ð°ÑÑÐ¸Ð² Ð²ÑÐµÑ… Ñ„Ð¾Ñ‚Ð¾Ðº
   public function loadImages($type, $id)
   {
     $sql = "SELECT * FROM cms_fotolib WHERE type = '$type' AND photo_id = $id";
@@ -42,18 +42,18 @@ class FotoLib
   public function addAcces($type)
   {
     $cfg = $this->inCore->loadComponentConfig($type);
-    $allow_add_foto = FALSE; //Ñòàâèì èçíà÷àëüíî çàïðåò íà äîáàâëåíèå
-//Åñëè ìû âîøëè è âñåì ðàçðåøåíî äîáàâëÿòü ôîòî    
+    $allow_add_foto = FALSE; //Ð¡Ñ‚Ð°Ð²Ð¸Ð¼ Ð¸Ð·Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ð¾ Ð·Ð°Ð¿Ñ€ÐµÑ‚ Ð½Ð° Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ
+//Ð•ÑÐ»Ð¸ Ð¼Ñ‹ Ð²Ð¾ÑˆÐ»Ð¸ Ð¸ Ð²ÑÐµÐ¼ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¾ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ„Ð¾Ñ‚Ð¾    
     if($this->inUser->id != 0 AND $cfg['calendar_image_acces'] == "all") 
     {
       $allow_add_foto = TRUE;
     }
-//Åñëè ìû àâòîð è ðàçðåøåíî äîáàâëÿòü òîëüêî àâòîðàì
+//Ð•ÑÐ»Ð¸ Ð¼Ñ‹ Ð°Ð²Ñ‚Ð¾Ñ€ Ð¸ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¾ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð°Ð²Ñ‚Ð¾Ñ€Ð°Ð¼
     if($place['user_id'] == $this->inUser->id AND $cfg['calendar_image_acces'] == "author")
     {
       $allow_add_foto = TRUE;
     }
-//Åñëè ðàçðåøåíî äîáàâëÿòü òîëüêî àäìèíàì
+//Ð•ÑÐ»Ð¸ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¾ Ð´Ð¾Ð±Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ð°Ð´Ð¼Ð¸Ð½Ð°Ð¼
     if($this->inUser->is_admin AND $cfg['calendar_image_acces'] == "admin")
     {
       $allow_add_foto = TRUE;
@@ -69,14 +69,14 @@ class FotoLib
       if(mb_ereg("image",$file['type']))
       {
 	$md5 = md5_file($file['tmp_name']);
-	if(!file_exists($this->root."/images/fotolib/$md5.jpg"))
+	if(!file_exists($this->root."/upload/userfiles/$md5.jpg"))
 	{
-	  copy($file['tmp_name'],$this->root."/images/fotolib/$md5.jpg");
-	  $this->Resize($this->root."/images/fotolib/$md5.jpg",$this->root."/images/fotolib/S_$md5.jpg",640, 480);
-	  $this->Resize($this->root."/images/fotolib/$md5.jpg",$this->root."/images/fotolib/L_$md5.jpg",128, 128);
+	  copy($file['tmp_name'],$this->root."/upload/userfiles/$md5.jpg");
+	  $this->Resize($this->root."/upload/userfiles/$md5.jpg",$this->root."/upload/userfiles/S_$md5.jpg",640, 480);
+	  $this->Resize($this->root."/upload/userfiles/$md5.jpg",$this->root."/upload/userfiles/L_$md5.jpg",128, 128);
 	  $user_id = $this->inUser->id;
 	  $time = time();
-	  if(file_exists($this->root."/images/fotolib/L_$md5.jpg") AND file_exists($this->root."/images/fotolib/L_$md5.jpg"))
+	  if(file_exists($this->root."/upload/userfiles/L_$md5.jpg") AND file_exists($this->root."/upload/userfiles/L_$md5.jpg"))
 	  {
 	    $sql = "INSERT INTO cms_fotolib (`user_id`, `type`, `photo_id`, `name`, `time`) 
 				   VALUES ('$user_id', '$type', '$photo_id', '$md5', '$time')";
@@ -84,8 +84,8 @@ class FotoLib
 	  }
 	  else
 	  {
-	    unlink($this->root."/images/fotolib/$md5.jpg");
-	    cmsCore::addSessionMessage('Îøèáêà äîáàâëåíèÿ!', 'error');
+	    unlink($this->root."/upload/userfiles/$md5.jpg");
+	    cmsCore::addSessionMessage('ÐžÑˆÐ¸Ð±ÐºÐ° Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ñ!', 'error');
 	  }
 	}
       }
@@ -125,16 +125,16 @@ class FotoLib
     $image = $this->inDB->fetch_assoc($result);
     if($this->inUser->id == $image['user_id'] OR $this->inUser->is_admin)
     {
-      $this->RotateImg($this->root."/images/fotolib/".$image['name'].".jpg", $deg);
-      $md5 = md5_file($this->root."/images/fotolib/".$image['name'].".jpg");
+      $this->RotateImg($this->root."/upload/userfiles/fotolib/".$image['name'].".jpg", $deg);
+      $md5 = md5_file($this->root."/upload/userfiles/fotolib/".$image['name'].".jpg");
     
-      if(copy($this->root."/images/fotolib/".$image['name'].".jpg", $this->root."/images/fotolib/".$md5.".jpg"))
+      if(copy($this->root."/upload/userfiles/fotolib/".$image['name'].".jpg", $this->root."/upload/userfiles/fotolib/".$md5.".jpg"))
       {
-	unlink($this->root."/images/fotolib/".$image['name'].".jpg");
-	unlink($this->root."/images/fotolib/S_".$image['name'].".jpg");
-	unlink($this->root."/images/fotolib/L_".$image['name'].".jpg");
-	$this->Resize($this->root."/images/fotolib/$md5.jpg",$this->root."/images/fotolib/S_$md5.jpg",640, 480);
-	$this->Resize($this->root."/images/fotolib/$md5.jpg",$this->root."/images/fotolib/L_$md5.jpg",128, 128);
+	unlink($this->root."/upload/userfiles/fotolib/".$image['name'].".jpg");
+	unlink($this->root."/upload/userfiles/fotolib/S_".$image['name'].".jpg");
+	unlink($this->root."/upload/userfiles/fotolib/L_".$image['name'].".jpg");
+	$this->Resize($this->root."/upload/userfiles/fotolib/$md5.jpg",$this->root."/upload/userfiles/fotolib/S_$md5.jpg",640, 480);
+	$this->Resize($this->root."/upload/userfiles/fotolib/$md5.jpg",$this->root."/upload/userfiles/fotolib/L_$md5.jpg",128, 128);
 	$sql = "UPDATE cms_fotolib SET `name` = '$md5' WHERE id = $image_id";
 	$result = $this->inDB->query($sql);
       }
@@ -151,9 +151,9 @@ class FotoLib
 
     if($this->inUser->id == $image['user_id'] OR $this->inUser->is_admin)
     {
-      unlink($this->root."/images/fotolib/".$image['name'].".jpg");
-      unlink($this->root."/images/fotolib/S_".$image['name'].".jpg");
-      unlink($this->root."/images/fotolib/L_".$image['name'].".jpg");
+      unlink($this->root."/upload/userfiles/fotolib/".$image['name'].".jpg");
+      unlink($this->root."/upload/userfiles/fotolib/S_".$image['name'].".jpg");
+      unlink($this->root."/upload/userfiles/fotolib/L_".$image['name'].".jpg");
       $sql = "DELETE FROM cms_fotolib WHERE name = '".$image['name']."' LIMIT 1";
       $result = $this->inDB->query($sql);
     }
