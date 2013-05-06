@@ -29,7 +29,7 @@
 		      `content` longtext NOT NULL,
 		      `parent_id` int(11) NOT NULL,
 		      PRIMARY KEY (`id`)
-		      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+		      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
 
 	$inDB->query("CREATE TABLE `cms_events_category` (
 		      `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -37,13 +37,13 @@
 		      `bg` text NOT NULL,
 		      `tx` text NOT NULL,
 		      PRIMARY KEY (`id`)
-		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
 
 	$inDB->query("CREATE TABLE `cms_events_signup` (
 		      `event_id` int(11) NOT NULL,
 		      `user_id` int(11) NOT NULL,
 		      `time` int(11) NOT NULL
-		      ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COLLATE=utf8";
+		      ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COLLATE=utf8");
 		      
 	$inDB->query("CREATE TABLE IF NOT EXISTS `cms_fotolib` (
 		      `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -53,7 +53,7 @@
 		      `name` text NOT NULL,
 		      `time` text NOT NULL,
 		      PRIMARY KEY (`id`)
-		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
+		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
         
         $inDB->query("INSERT INTO cms_comment_targets (target, component, title)
 		      VALUES ('calendar', 'calendar', 'Календарь')");
