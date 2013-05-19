@@ -140,6 +140,7 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
                             <option value="month" <?php if ($cfg['calendar_view']=='month'){?>selected="selected"<?php } ?>>Месяц</option>
                             <option value="agendaWeek" <?php if ($cfg['calendar_view']=='agendaWeek'){?>selected="selected"<?php } ?>>Неделя</option>
                             <option value="agendaDay" <?php if ($cfg['calendar_view']=='agendaDay'){?>selected="selected"<?php } ?>>День</option>
+                            <option value="afisha" <?php if ($cfg['calendar_view']=='afisha'){?>selected="selected"<?php } ?>>Афиша</option>
                         </select>
                     </td>
                 </tr>

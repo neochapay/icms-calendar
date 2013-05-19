@@ -53,6 +53,10 @@ function calendar()
 
     $catigories = $model->getAllCategories();
     
+    if($cfg['calendar_view']=='afisha')
+    {
+      $inCore->redirect('/calendar/list.html');
+    }
     $smarty->assign('guest', $guest);
     $smarty->assign('cfg', $cfg);
     $smarty->assign('catigories', $catigories);
@@ -63,11 +67,44 @@ function calendar()
 
   if($do == "list")
   {
-    $events = $model->getCalendar(time(),strtotime("NOW + 1 year"));
+    $inPage->addPathway("Календарь","/calendar");
+    $inPage->addPathway("Афиша");
     
+    $per_day = 10; //Количество сообытий в дне максимум
+    $display_days = 5; //количество дней которые показывается на странице
+
+    $dayt = 60*60*24; //Продолжительность дня в секундах
+    $start_time = strtotime("NOW 00:00:00"); //Определяем утро сегодняшнего дня
+    
+    $output = array();
+    
+    for($i=0;$i<$display_days;$i++)
+    {
+      $start = strtotime(date('Y-m-d',$start_time+$dayt*($i+1))." 00:00:00");
+      $n = date("N",$start+1);
+      //Определяем заголовок блока дня
+      if($i == 0)
+      {
+	$day['title'] = "Сегодня";
+      }
+      elseif($i == 1)
+      {
+	$day['title'] = "Завтра";
+      }
+      else
+      {
+	$day['title'] = $inCore->dateFormat(date('Y-m-d H:i:s',$start_time+$dayt*($i+1)));
+      }
+
+      $day['events'] = $model->getCalendar($start,$start+86400); //Определяем активные встречи за временной период
+      
+      $output[] = $day;
+    }
+  
     $inPage->setTitle("Календарь событий");
     $smarty = $inCore->initSmarty('components', 'com_calendar_list.tpl');
-    $smarty->assign('events', $events);
+    $smarty->assign('events', $output);
+    $smarty->assign('cfg', $cfg);
     $smarty->display('com_calendar_list.tpl');
   }
   
