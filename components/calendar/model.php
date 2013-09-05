@@ -21,10 +21,7 @@ class cms_model_calendar
 		'public_bg_color' => '#C3BCB9',
 		'public_tx_color' => '#000000',
 		'calendar_module' => 'all',
-		'calendar_module_count' => '5',
-		'calendar_firstHour' => '6',
-		'calendar_minTime' => '0',
-		'calendar_maxTime' => '24'
+		'calendar_module_count' => '5'
 		);
 
         return $cfg;
@@ -152,7 +149,8 @@ class cms_model_calendar
       LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id
       WHERE cms_events.parent_id = '{$parent_id}' 
       AND cms_events.start_time > '{$start_time}'
-      AND cms_events.end_time < '{$end_time}'";
+      AND cms_events.end_time < '{$end_time}'
+      ORDER BY cms_events.start_time ASC";
     }
     else
     {
@@ -167,15 +165,13 @@ class cms_model_calendar
       
     if($category_id)
     {
-      $sql .= " AND category_id = $category_id";
+      $sql .= " AND cms_events_category.id = $category_id";
     }    
-    
     
     $result = $this->inDB->query($sql);
     
     if ($this->inDB->error()) 
     { 
-      print mysql_error();
       return false; 
     }
       
@@ -357,29 +353,6 @@ class cms_model_calendar
       return false; 
     }
     return true;
-  }
-  
-  public function getUserGroups()
-  {
-    $sql = "SELECT * FROM cms_user_groups";
-    $result = $this->inDB->query($sql);
-    
-    if ($this->inDB->error()) 
-    { 
-      return false; 
-    }
-      
-    if (!$this->inDB->num_rows($result)) 
-    { 
-      return false; 
-    }
-      
-    $output = array();
-    while ($row = $this->inDB->fetch_assoc($result))
-    {
-      $output[] = $row;
-    }
-    return $output;      
   }
 }
 

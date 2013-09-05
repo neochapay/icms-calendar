@@ -30,14 +30,24 @@ $GLOBALS['cp_page_head'][] = '<link href="/includes/jquery/tabs/tabs.css" rel="s
 //LOAD CURRENT CONFIG
 $cfg = $model->config;
 
+//CONFIG DEFAULTS
+/*
+if (!isset($cfg['calendar_view'])) { $cfg['calendar_view'] = 'agendaWeek'; }
+if (!isset($cfg['calendar_access'])) { $cfg['calendar_access'] = 'admin'; }
+if (!isset($cfg['calendar_image_acces'])) { $cfg['maps_image_acces'] = 'admin'; }
+if (!isset($cfg['calendar_image_original'])) { $cfg['maps_image_original'] = '1'; }
+if (!isset($cfg['private_bg_color'])) { $cfg['private_bg_color'] = '#3366CC'; }
+if (!isset($cfg['private_tx_color'])) { $cfg['private_tx_color'] = '#000000'; }
+if (!isset($cfg['public_bg_color'])) { $cfg['public_bg_color'] = '#C3BCB9'; }
+if (!isset($cfg['public_tx_color'])) { $cfg['public_tx_color'] = '#000000'; }
+if (!isset($cfg['calendar_module'])) { $cfg['calendar_module'] = 'all'; }
+if (!isset($cfg['calendar_module_count'])) { $cfg['calendar_module_count'] = '5'; }*/
+
 //SAVE CONFIG
 if($opt=='saveconfig'){
     $cfg = array();
     $cfg['calendar_view'] = $inCore->request('calendar_view', 'str');
     $cfg['calendar_access'] = $inCore->request('calendar_access', 'str');
-    $cfg['calendar_firstHour'] = $inCore->request('calendar_firstHour', 'int');
-    $cfg['calendar_minTime'] = $inCore->request('calendar_minTime', 'int');
-    $cfg['calendar_maxTime'] = $inCore->request('calendar_maxTime', 'int');
     $cfg['calendar_image_acces'] = $inCore->request('calendar_image_acces', 'str');
     $cfg['calendar_image_original'] = $inCore->request('calendar_image_original', 'int');  
     $cfg['private_bg_color'] = $inCore->request('private_bg_color', 'str');
@@ -46,12 +56,7 @@ if($opt=='saveconfig'){
     $cfg['public_tx_color'] = $inCore->request('public_tx_color', 'str');
     $cfg['calendar_module'] = $inCore->request('calendar_module', 'str');
     $cfg['calendar_module_count'] = $inCore->request('calendar_module_count', 'int');
-    
-//Проверяем чтобы максимальное время было больше минимального
-    if($cfg['calendar_maxTime'] < $cfg['calendar_minTime'])
-    {
-      $cfg['calendar_maxTime'] = $cfg['calendar_minTime']+1;
-    }
+ 
 //Добавление категорий 
     if($inCore->request('new_name', 'str'))
     {
@@ -140,7 +145,6 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
                             <option value="month" <?php if ($cfg['calendar_view']=='month'){?>selected="selected"<?php } ?>>Месяц</option>
                             <option value="agendaWeek" <?php if ($cfg['calendar_view']=='agendaWeek'){?>selected="selected"<?php } ?>>Неделя</option>
                             <option value="agendaDay" <?php if ($cfg['calendar_view']=='agendaDay'){?>selected="selected"<?php } ?>>День</option>
-                            <option value="afisha" <?php if ($cfg['calendar_view']=='afisha'){?>selected="selected"<?php } ?>>Афиша</option>
                         </select>
                     </td>
                 </tr>
@@ -159,114 +163,6 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
                         </select>
                     </td>
                 </tr>
-               <tr>
-                    <td width="250">
-                        <strong>Начало дня: </strong><br/>
-                        <span class="hinttext">
-                            Первый час с которого показываться календарь в режиме недели
-                        </span>
-                    </td>
-                    <td valign="top">
-                        <select name="calendar_firstHour" id="calendar" style="width:245px">
-                            <option value="0" <?php if ($cfg['calendar_firstHour']=='0'){?>selected="selected"<?php } ?>>0</option>
-                            <option value="1" <?php if ($cfg['calendar_firstHour']=='1'){?>selected="selected"<?php } ?>>1</option>
-                            <option value="2" <?php if ($cfg['calendar_firstHour']=='2'){?>selected="selected"<?php } ?>>2</option>
-                            <option value="3" <?php if ($cfg['calendar_firstHour']=='3'){?>selected="selected"<?php } ?>>3</option>
-                            <option value="4" <?php if ($cfg['calendar_firstHour']=='4'){?>selected="selected"<?php } ?>>4</option>
-                            <option value="5" <?php if ($cfg['calendar_firstHour']=='5'){?>selected="selected"<?php } ?>>5</option>
-                            <option value="6" <?php if ($cfg['calendar_firstHour']=='6'){?>selected="selected"<?php } ?>>6</option>
-                            <option value="7" <?php if ($cfg['calendar_firstHour']=='7'){?>selected="selected"<?php } ?>>7</option>
-                            <option value="8" <?php if ($cfg['calendar_firstHour']=='8'){?>selected="selected"<?php } ?>>8</option>
-                            <option value="9" <?php if ($cfg['calendar_firstHour']=='9'){?>selected="selected"<?php } ?>>9</option>
-                            <option value="10" <?php if ($cfg['calendar_firstHour']=='10'){?>selected="selected"<?php } ?>>10</option>
-                            <option value="11" <?php if ($cfg['calendar_firstHour']=='11'){?>selected="selected"<?php } ?>>11</option>
-                            <option value="12" <?php if ($cfg['calendar_firstHour']=='12'){?>selected="selected"<?php } ?>>12</option>
-                            <option value="13" <?php if ($cfg['calendar_firstHour']=='13'){?>selected="selected"<?php } ?>>13</option>
-                            <option value="14" <?php if ($cfg['calendar_firstHour']=='14'){?>selected="selected"<?php } ?>>14</option>
-                            <option value="15" <?php if ($cfg['calendar_firstHour']=='15'){?>selected="selected"<?php } ?>>15</option>
-                            <option value="16" <?php if ($cfg['calendar_firstHour']=='16'){?>selected="selected"<?php } ?>>16</option>
-                            <option value="17" <?php if ($cfg['calendar_firstHour']=='17'){?>selected="selected"<?php } ?>>17</option>
-                            <option value="18" <?php if ($cfg['calendar_firstHour']=='18'){?>selected="selected"<?php } ?>>18</option>
-                            <option value="19" <?php if ($cfg['calendar_firstHour']=='19'){?>selected="selected"<?php } ?>>19</option>
-                            <option value="20" <?php if ($cfg['calendar_firstHour']=='20'){?>selected="selected"<?php } ?>>20</option>
-                            <option value="21" <?php if ($cfg['calendar_firstHour']=='21'){?>selected="selected"<?php } ?>>21</option>
-                            <option value="22" <?php if ($cfg['calendar_firstHour']=='22'){?>selected="selected"<?php } ?>>22</option>
-                            <option value="23" <?php if ($cfg['calendar_firstHour']=='23'){?>selected="selected"<?php } ?>>23</option>
-                        </select>
-                    </td>
-                </tr>
-               <tr>
-                    <td width="250">
-                        <strong>Минимальное время: </strong><br/>
-                        <span class="hinttext">
-                            Начальное время дня с которого можно добавлять мероприятия
-                        </span>
-                    </td>
-                    <td valign="top">
-                        <select name="calendar_minTime" id="calendar" style="width:245px">
-                            <option value="0" <?php if ($cfg['calendar_minTime']=='0'){?>selected="selected"<?php } ?>>0</option>
-                            <option value="1" <?php if ($cfg['calendar_minTime']=='1'){?>selected="selected"<?php } ?>>1</option>
-                            <option value="2" <?php if ($cfg['calendar_minTime']=='2'){?>selected="selected"<?php } ?>>2</option>
-                            <option value="3" <?php if ($cfg['calendar_minTime']=='3'){?>selected="selected"<?php } ?>>3</option>
-                            <option value="4" <?php if ($cfg['calendar_minTime']=='4'){?>selected="selected"<?php } ?>>4</option>
-                            <option value="5" <?php if ($cfg['calendar_minTime']=='5'){?>selected="selected"<?php } ?>>5</option>
-                            <option value="6" <?php if ($cfg['calendar_minTime']=='6'){?>selected="selected"<?php } ?>>6</option>
-                            <option value="7" <?php if ($cfg['calendar_minTime']=='7'){?>selected="selected"<?php } ?>>7</option>
-                            <option value="8" <?php if ($cfg['calendar_minTime']=='8'){?>selected="selected"<?php } ?>>8</option>
-                            <option value="9" <?php if ($cfg['calendar_minTime']=='9'){?>selected="selected"<?php } ?>>9</option>
-                            <option value="10" <?php if ($cfg['calendar_minTime']=='10'){?>selected="selected"<?php } ?>>10</option>
-                            <option value="11" <?php if ($cfg['calendar_minTime']=='11'){?>selected="selected"<?php } ?>>11</option>
-                            <option value="12" <?php if ($cfg['calendar_minTime']=='12'){?>selected="selected"<?php } ?>>12</option>
-                            <option value="13" <?php if ($cfg['calendar_minTime']=='13'){?>selected="selected"<?php } ?>>13</option>
-                            <option value="14" <?php if ($cfg['calendar_minTime']=='14'){?>selected="selected"<?php } ?>>14</option>
-                            <option value="15" <?php if ($cfg['calendar_minTime']=='15'){?>selected="selected"<?php } ?>>15</option>
-                            <option value="16" <?php if ($cfg['calendar_minTime']=='16'){?>selected="selected"<?php } ?>>16</option>
-                            <option value="17" <?php if ($cfg['calendar_minTime']=='17'){?>selected="selected"<?php } ?>>17</option>
-                            <option value="18" <?php if ($cfg['calendar_minTime']=='18'){?>selected="selected"<?php } ?>>18</option>
-                            <option value="19" <?php if ($cfg['calendar_minTime']=='19'){?>selected="selected"<?php } ?>>19</option>
-                            <option value="20" <?php if ($cfg['calendar_minTime']=='20'){?>selected="selected"<?php } ?>>20</option>
-                            <option value="21" <?php if ($cfg['calendar_minTime']=='21'){?>selected="selected"<?php } ?>>21</option>
-                            <option value="22" <?php if ($cfg['calendar_minTime']=='22'){?>selected="selected"<?php } ?>>22</option>
-                            <option value="23" <?php if ($cfg['calendar_minTime']=='23'){?>selected="selected"<?php } ?>>23</option>
-                        </select>
-                    </td>
-                </tr>                
-               <tr>
-                    <td width="250">
-                        <strong>Максимальное время: </strong><br/>
-                        <span class="hinttext">
-                            Конечное время дня до которого можно добавлять мероприятия
-                        </span>
-                    </td>
-                    <td valign="top">
-                        <select name="calendar_maxTime" id="calendar" style="width:245px">
-                            <option value="1" <?php if ($cfg['calendar_maxTime']=='1'){?>selected="selected"<?php } ?>>1</option>
-                            <option value="2" <?php if ($cfg['calendar_maxTime']=='2'){?>selected="selected"<?php } ?>>2</option>
-                            <option value="3" <?php if ($cfg['calendar_maxTime']=='3'){?>selected="selected"<?php } ?>>3</option>
-                            <option value="4" <?php if ($cfg['calendar_maxTime']=='4'){?>selected="selected"<?php } ?>>4</option>
-                            <option value="5" <?php if ($cfg['calendar_maxTime']=='5'){?>selected="selected"<?php } ?>>5</option>
-                            <option value="6" <?php if ($cfg['calendar_maxTime']=='6'){?>selected="selected"<?php } ?>>6</option>
-                            <option value="7" <?php if ($cfg['calendar_maxTime']=='7'){?>selected="selected"<?php } ?>>7</option>
-                            <option value="8" <?php if ($cfg['calendar_maxTime']=='8'){?>selected="selected"<?php } ?>>8</option>
-                            <option value="9" <?php if ($cfg['calendar_maxTime']=='9'){?>selected="selected"<?php } ?>>9</option>
-                            <option value="10" <?php if ($cfg['calendar_maxTime']=='10'){?>selected="selected"<?php } ?>>10</option>
-                            <option value="11" <?php if ($cfg['calendar_maxTime']=='11'){?>selected="selected"<?php } ?>>11</option>
-                            <option value="12" <?php if ($cfg['calendar_maxTime']=='12'){?>selected="selected"<?php } ?>>12</option>
-                            <option value="13" <?php if ($cfg['calendar_maxTime']=='13'){?>selected="selected"<?php } ?>>13</option>
-                            <option value="14" <?php if ($cfg['calendar_maxTime']=='14'){?>selected="selected"<?php } ?>>14</option>
-                            <option value="15" <?php if ($cfg['calendar_maxTime']=='15'){?>selected="selected"<?php } ?>>15</option>
-                            <option value="16" <?php if ($cfg['calendar_maxTime']=='16'){?>selected="selected"<?php } ?>>16</option>
-                            <option value="17" <?php if ($cfg['calendar_maxTime']=='17'){?>selected="selected"<?php } ?>>17</option>
-                            <option value="18" <?php if ($cfg['calendar_maxTime']=='18'){?>selected="selected"<?php } ?>>18</option>
-                            <option value="19" <?php if ($cfg['calendar_maxTime']=='19'){?>selected="selected"<?php } ?>>19</option>
-                            <option value="20" <?php if ($cfg['calendar_maxTime']=='20'){?>selected="selected"<?php } ?>>20</option>
-                            <option value="21" <?php if ($cfg['calendar_maxTime']=='21'){?>selected="selected"<?php } ?>>21</option>
-                            <option value="22" <?php if ($cfg['calendar_maxTime']=='22'){?>selected="selected"<?php } ?>>22</option>
-                            <option value="23" <?php if ($cfg['calendar_maxTime']=='23'){?>selected="selected"<?php } ?>>23</option>
-                            <option value="24" <?php if ($cfg['calendar_maxTime']=='24'){?>selected="selected"<?php } ?>>24</option>
-                        </select>
-                    </td>
-                </tr>                 
          </table>
     </div>
 </div>

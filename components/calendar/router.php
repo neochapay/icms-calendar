@@ -36,7 +36,7 @@ function routes_calendar()
 
   $routes[] = array(
       '_uri'  => '/^calendar\/category([0-9]+).html$/i',
-      'do'    => 'view',
+      'do'    => 'category_view',
       1       => 'category_id'
   );  
   

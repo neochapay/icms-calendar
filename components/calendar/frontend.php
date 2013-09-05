@@ -1,4 +1,17 @@
 <?php
+/*
+ALTER TABLE  `cms_events` ADD  `parent_id` INT NOT NULL
+
+v 0.4 
+ALTER TABLE  `cms_events` CHANGE  `apx`  `category_id` INT NOT NULL
+CREATE TABLE IF NOT EXISTS `cms_events_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `bg` text NOT NULL,
+  `tx` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 AUTO_INCREMENT=1;
+*/
 function declension($digit,$expr,$onlyword=false)
 {
         if(!is_array($expr)) $expr = array_filter(explode(' ', $expr));
@@ -32,97 +45,108 @@ function calendar()
   if ($do == 'view')
   {
     $inPage->setTitle("Календарь событий");
-    $inPage->addPathway("Календарь","/calendar");
-    
     $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
-    
-    $category_id = $inCore->request('category_id', 'int', 0);
 
     $guest = TRUE;
     
-    if($cfg['group_'.$inUser->group_id])
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
     {
-      $can_add = TRUE;
+      $guest = FALSE;
+    }
+    
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
     }
 
     $catigories = $model->getAllCategories();
     
-    if($category_id)
-    {
-      $category = $category_id;
-      $cat = $model->getCategory($category);
-      $inPage->addPathway($cat['name']);
-    }
-    else
-    {
-      $category = "all";
-    }
-    
-    if($cfg['calendar_view']=='afisha')
-    {
-      $inCore->redirect('/calendar/list.html');
-    }
-    $smarty->assign('can_add', $can_add);
+    $smarty->assign('guest', $guest);
     $smarty->assign('cfg', $cfg);
     $smarty->assign('catigories', $catigories);
-    $smarty->assign('category', $category);
+    $smarty->assign('category', "all");
     $smarty->display('com_calendar_view.tpl');
     return;
   }
 
   if($do == "list")
   {
-    $inPage->addPathway("Календарь","/calendar");
-    $inPage->addPathway("Афиша");
+    $events = $model->getCalendar(time(),strtotime("NOW + 1 year"));
     
-    $per_day = 10; //Количество сообытий в дне максимум
-    $display_days = 5; //количество дней которые показывается на странице
-
-    $dayt = 60*60*24; //Продолжительность дня в секундах
-    $start_time = strtotime(date('Y-m-d',time())." 00:00:00")-$dayt; //Определяем утро сегодняшнего дня
-    
-    $output = array();
-    
-    for($i=0;$i<$display_days;$i++)
-    {
-      $start = strtotime(date('Y-m-d',$start_time+$dayt*$i));
-      $n = date("N",$start+1);
-      //Определяем заголовок блока дня
-      if($i == 0)
-      {
-	$day['title'] = "Сегодня";
-      }
-      elseif($i == 1)
-      {
-	$day['title'] = "Завтра";
-      }
-      else
-      {
-	$day['title'] = $inCore->dateFormat(date('Y-m-d H:i:s',$start_time+$dayt*($i+1)));
-      }
-
-      $day['events'] = $model->getCalendar($start,$start+86400); //Определяем активные встречи за временной период
-      
-      $output[] = $day;
-    }
-  
     $inPage->setTitle("Календарь событий");
     $smarty = $inCore->initSmarty('components', 'com_calendar_list.tpl');
-    $smarty->assign('events', $output);
-    $smarty->assign('cfg', $cfg);
+    $smarty->assign('events', $events);
     $smarty->display('com_calendar_list.tpl');
+  }
+  
+  if($do == "category_view")
+  {
+    $category_id = $inCore->request('category_id', 'int', 0);
+    $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
+
+    $guest = TRUE;
+    
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
+    }
+    $category = $model->getCategory($category_id);
+    
+    $catigories = $model->getAllCategories();
+    
+    if(!$category)
+    {
+      //$inCore->redirect("/calendar");
+      print mysql_error();
+    }
+    
+    $inPage->setTitle("Календарь событий:".$category['title']);
+    $smarty->assign('guest', $guest);
+    $smarty->assign('cfg', $cfg);
+    $smarty->assign('catigories', $catigories);
+    $smarty->assign('category', $category_id);
+    $smarty->display('com_calendar_view.tpl');
+    return;    
   }
   
   if ($do == 'add')
   {
-    if($cfg['group_'.$inUser->group_id])
+    $guest = TRUE;
+    
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
     {
-      $can_add = TRUE;
+      $guest = FALSE;
+    }
+    
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
     }  
   
-    if(!$can_add)
+  
+    if($guest)
     {
-      $inCore->redirectBack();
+      $inCore->redirect('/'); exit;
     }
 
     $is_send = $inCore->inRequest('title');
@@ -227,7 +251,6 @@ function calendar()
 /*FOTOLIB*/    
     
     $event = $model->getEvent($event_id);
-
     if(!$event)
     {
       cmsCore::addSessionMessage('Ошибка запроса'.mysql_error(), 'error');
@@ -315,11 +338,6 @@ function calendar()
 
       $inPage->setTitle('Просмотр события "'.$event['title'].'"');
       $inPage->addPathway("Календарь", "/calendar"); 
-      if($event['parent_id'])
-      {
-	$parent = $model->getEvent($event['parent_id']);
-	$inPage->addPathway($parent['title'], "/calendar/event".$parent['id'].".html"); 
-      }
       $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
       
       $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
@@ -397,13 +415,13 @@ function calendar()
     {
       $inCore->redirect('/'); exit;
     }
-    
     $event_id = $inCore->request('event_id', 'int', 0);
     $event = $model->getEvent($event_id);
 
     if($event["author_id"] != $inUser->id and !$inUser->is_admin)
     {
-	cmsCore::addSessionMessage('Ошибка доступа', 'error');
+
+      	cmsCore::addSessionMessage('Ошибка доступа', 'error');
 	$inCore->redirectBack();
 	exit;
     }
@@ -435,7 +453,7 @@ function calendar()
 	  $data_end = $data_start;
 	}
 	$end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
-	
+	//die($start_time."-".$end_time);
 	if(!is_numeric($type))
 	{
 	  $category_id = "0";
@@ -485,7 +503,6 @@ function calendar()
       $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
       $smarty->assign('event', $event);
       $smarty->assign('edit', 1);
-      $smarty->assign('cfg', $cfg);
       $smarty->assign('catigories', $catigories);
       $smarty->assign('title', $event['title']);
       $smarty->assign('content', $event['content']);
@@ -506,25 +523,13 @@ function calendar()
 
   if($do == "add_parent")
   {
-    if($cfg['group_'.$inUser->group_id])
-    {
-      $can_add = TRUE;
-    }
-    
-    if(!$can_add)
+    if($inUser->id == 0)
     {
       $inCore->redirectBack();
       return;
     }
-    
     $event_id = $inCore->request('event_id', 'int', 0);
     $event = $model->getEvent($event_id);
-    
-    if($event['user_id'] != $inUser->id)
-    {
-      $inCore->redirectBack();
-      return;    
-    }
     
     if(!$event)
     {
@@ -572,10 +577,8 @@ function calendar()
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
     $smarty->assign('parent', "1");
-    $smarty->assign('edit', "1");
     $smarty->assign('parent_title', $event['title']);
     $smarty->assign('title', "");
-    $smarty->assign('cfg', $cfg);
     $smarty->assign('content', "");
     $smarty->assign('type', $event['type']);
     $smarty->assign('start_date', date("d.m.Y", $event['start_time']));
@@ -652,12 +655,24 @@ function calendar()
 //AJAX  
   if($do == "ajax_add")
   {
-    if($cfg['group_'.$inUser->group_id])
+    $guest = TRUE;
+    
+    if($inUser->id == 0 and $cfg['calendar_access'] == "all")
     {
-      $can_add = TRUE;
+      $guest = FALSE;
     }
     
-    if($can_add)
+    if($inUser->id != 0 and $cfg['calendar_access'] == "users")
+    {
+      $guest = FALSE;
+    }
+    
+    if($inUser->is_admin)
+    {
+      $guest = FALSE;
+    }  
+  
+    if(!$guest)
     {
       $title = $inCore->request('title', 'str');
       $type = $inCore->request('type', 'str');
@@ -671,25 +686,6 @@ function calendar()
       
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
-      
-      if($start_hour < $cfg['calendar_minTime'])
-      {
-	$output['error'] = TRUE;
-	$output['errortext'] = "Событие начинается слишком рано";      
-      }
-      
-      if($end_hour > $cfg['calendar_maxTime'])
-      {
-	$output['error'] = TRUE;
-	$output['errortext'] = "Событие заканчивается слишком поздно";            
-      }
-      
-      if($end_hour == $cfg['calendar_maxTime'] and $end_min != 0)
-      {
-	$output['error'] = TRUE;
-	$output['errortext'] = "Событие заканчивается слишком поздно";  
-      }
-      
       
       if($type == "private")
       {
@@ -768,7 +764,7 @@ function calendar()
     $minuteDelta = $inCore->request('minuteDelta', 'str');
     
     $event = $model->getEvent($id);
-    if($event['author_id'] == $inUser->id or $inUser->admin)
+    if($event['author_id'] == $inUser->id)
     {
       $type = $event['type'];
       $category_id = $event['category_id'];
@@ -804,9 +800,9 @@ function calendar()
     $starttime = $inCore->request('start', 'int');
     $endtime = $inCore->request('end', 'int');
     $parent_id = $inCore->request('parent_id', 'parent_id');
-    $category = $inCore->request('category', 'int');
+    $category = $inCore->request('category', 'str');
     
-    if($category == "all" and !is_numeric($category))
+    if($category == "all" or !is_numeric($category))
     {
       $category = FALSE;
     }
@@ -905,31 +901,10 @@ function calendar()
     $start = strtotime($inCore->request('start', 'str'));
     $end = strtotime($inCore->request('end', 'str'));
     
-    if($start < time())
-    {
-      echo 'error';
-      exit;
-    }
-    
     if(!$inUser->id)
     {
-      echo "error";
+      print "Ошибка доступа.";
       exit;
-    }
-//Коректность времени добавления
-    $start_hour = date("H", $start);
-    if($start_hour < $cfg['calendar_minTime'])
-    {
-      $start_hour = $cfg['calendar_minTime'];
-    }
-    
-    $end_hour = date("H", $end);
-    $end_min = date("i", $end);
-    
-    if($end_hour > $cfg['calendar_maxTime'])
-    {
-      $end_hour = $cfg['calendar_maxTime'];
-      $end_min = "00";
     }
     
     $catigories = $model->getAllCategories();
@@ -939,14 +914,13 @@ function calendar()
     $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
     $smarty->assign('catigories', $catigories);
     $smarty->assign('start_date', date("d.m.Y", $start));
-    $smarty->assign('start_hour', $start_hour);
+    $smarty->assign('start_hour', date("H", $start));
     $smarty->assign('start_min', date("i", $start));
     $smarty->assign('end_date', date("d.m.Y", $end));
-    $smarty->assign('end_hour', $end_hour);
-    $smarty->assign('end_min', $end_min);
+    $smarty->assign('end_hour', date("H", $end));
+    $smarty->assign('end_min', date("i", $end));
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
-    $smarty->assign('cfg', $cfg);
     $smarty->display('com_calendar_add.tpl');
     exit;
   }

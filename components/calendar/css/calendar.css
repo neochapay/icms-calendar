@@ -52,13 +52,3 @@ ul.fotolib LI{
   display: inline-block;
   padding: 3px;
 }
-
-UL.calendar LI{
-  display: inline-block;
-  padding: 5px;
-  margin: 5px;
-  min-height: 20px;
-  width: 180px;
-  border: 1px solid black;
-  float: left;
-}
