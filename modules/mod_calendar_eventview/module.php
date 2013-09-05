@@ -23,7 +23,7 @@ function  mod_calendar_eventview($module_id)
 	cms_events_signup.user_id = ".$inUser->id." AND 
 	cms_events.author_id <> ".$inUser->id." AND 
 	cms_events.start_time > ".time()." 
-	GROUP BY cms_events.id ORDER BY cms_events.start_time ASC LIMIT ".$cfg['calendar_module_count'];
+	GROUP BY cms_events.id ORDER BY cms_events.start_time ASC LIMIT 5";
   }
   else
   {
@@ -34,7 +34,7 @@ function  mod_calendar_eventview($module_id)
 	    LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id	    
 	    WHERE cms_events.`type` = 'public' 
 	    AND cms_events.start_time > ".time()." 
-	    ORDER BY cms_events.start_time ASC LIMIT ".$cfg['calendar_module_count'];    
+	    ORDER BY cms_events.start_time ASC LIMIT 5";    
   }
 
   $result = $DB->query($sql);
@@ -47,22 +47,22 @@ function  mod_calendar_eventview($module_id)
   $events = array();
   while ($event = $DB->fetch_assoc($result))
   {
-    if($event['author_id'] == $inUser->id)
+    $sql1 = "SELECT * FROM cms_fotolib WHERE `type`='calendar' AND `photo_id` = ".$event['id']." LIMIT 1";
+    $result1 = $DB->query($sql1);
+    $foto = $DB->fetch_assoc($result1);
+    if($foto['name'] != "")
     {
-      $event['time'] == "";
+      $event['image'] = $foto['name'].".jpg";
     }
+    unset($foto);
 
-    if($event['category_id'] == 0)
-    {
-      $event['bg'] = '#C3BCB9';
-      $event['tx'] = '#000000';
-    }
-    
+    $event['url'] = "/calendar/event".$event['id'].".html";
+    $event['description'] = $event['content'];
     $events[] = $event;
   }
 
   $smarty = $inCore->initSmarty('modules', 'mod_calendar_eventview.tpl');
-  $smarty->assign('events', $events);
+  $smarty->assign('articles', $events);
   $smarty->display('mod_calendar_eventview.tpl');  
   return true;
 }

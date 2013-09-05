@@ -55,7 +55,7 @@ $(document).ready(function() {
 			allDayDefault: false,
 			firstDay: '1',
 {/literal}
-{if $guest != TRUE}
+{if $can_add}
 {literal}
 			selectable: true,
 			selectHelper: true,
