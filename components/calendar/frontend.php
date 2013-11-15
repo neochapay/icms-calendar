@@ -724,7 +724,7 @@ function calendar()
 	$event = $model->getEvent($event_id);
 	$output['event_id'] = $event_id;
 	$output['start'] = $event['start_time'];
-	$output['end_time'] = $event['end_time'];
+	$output['end'] = $event['end_time'];
 	
 	if($event['end_time']-$event['start_time'] > 60*60*8)
 	{
@@ -787,7 +787,14 @@ function calendar()
     
       if($type_act == "resize")
       {
-	$end_time = $end_time+$delta;
+	if($end_time-$start_time > 0)
+	{
+	  $end_time = $end_time+$delta;
+	}
+	else
+	{
+	  print "Ошибка смещения";
+	}
       }
       $model->updateEvent($id,$type,$category_id,$start_time,$end_time,$title,$content);
     }

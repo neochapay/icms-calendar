@@ -147,6 +147,7 @@ $(document).ready(function() {
 			if(answer != "")
 			{
 			  alert(answer);
+			  return false;
 			}
 		      }
 		    })
@@ -162,6 +163,7 @@ $(document).ready(function() {
 			if(answer != "")
 			{
 			  alert(answer);
+			  return false;
 			}
 		      }
 		    })
