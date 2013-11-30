@@ -1,8 +1,8 @@
-{add_js file="components/calendar/js/jquery-ui-1.8.23.custom.min.js"}
+{add_js file="components/calendar/js/jquery-ui.js"}
 {add_js file="components/calendar/js/jquery.ui.dialog.js"}
 {add_js file="components/calendar/js/fullcalendar.js"}
 {add_css file="components/calendar/css/fullcalendar.css"}
-{add_css file="components/calendar/css/redmond/jquery-ui-1.8.23.custom.css"}
+{add_css file="components/calendar/css/redmond/jquery-ui-1.10.3.custom.css"}
 {add_js file="core/js/smiles.js"}
 
 {literal}
