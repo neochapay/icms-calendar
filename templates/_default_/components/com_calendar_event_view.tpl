@@ -1,8 +1,6 @@
 {add_css file="components/calendar/css/calendar.css"}
-{add_css file="components/calendar/js/fancybox/jquery.fancybox-1.3.4.css"}
-
-{add_js file="components/calendar/js/fancybox/jquery.fancybox-1.3.4.js"}
-{add_js file="components/calendar/js/fancybox/jquery.easing-1.3.pack.js"}
+{add_css file="components/calendar/js/fancybox/jquery.fancybox.css"}
+{add_js file="components/calendar/js/fancybox/jquery.fancybox.pack.js"}
 
 {if $parent}
   {add_js file="components/calendar/js/jquery-ui-1.8.23.custom.min.js"}
