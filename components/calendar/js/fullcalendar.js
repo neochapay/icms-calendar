@@ -2776,8 +2776,7 @@ setDefaults({
 
 function AgendaView(element, calendar, viewName) {
 	var t = this;
-	
-	
+
 	// exports
 	t.renderAgenda = renderAgenda;
 	t.setWidth = setWidth;
@@ -3991,8 +3990,12 @@ function AgendaEventRenderer() {
 			"<div class='fc-event-inner'>" +
 			"<div class='fc-event-time'>" +
 			htmlEscape(formatDates(event.start, event.end, opt('timeFormat'))) +
-			"</div>" +
-			"<div class='fc-event-title'>" +
+			"</div>";
+			if(event.image)
+			{
+			  html += "<div class='fc-event-image'><img src='"+event.image+"'></div>";
+			}
+			html += "<div class='fc-event-title'>" +
 			htmlEscape(event.title || '') +
 			"</div>" +
 			"</div>" +
@@ -5359,11 +5362,14 @@ function DayEventRenderer() {
 				) +
 				"</span>";
 		}
-		html +=
-			"<span class='fc-event-title'>" +
-			htmlEscape(event.title || '') +
-			"</span>" +
-			"</div>";
+		
+		if(event.image)
+		{
+		  html += "<span class='fc-event-image'><img src='"+event.image+"'></span>";
+		}
+		
+		html += "<span class='fc-event-title'>"+ htmlEscape(event.title || '')+"</span></div>";
+		
 		if (segment.isEnd && isEventResizable(event)) {
 			html +=
 				"<div class='ui-resizable-handle ui-resizable-" + (isRTL ? 'w' : 'e') + "'>" +

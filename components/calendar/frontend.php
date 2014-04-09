@@ -830,6 +830,7 @@ function calendar()
       $data['start'] = date("Y-m-d H:i:s",$data["start_time"]);
       $data['end'] = date("Y-m-d H:i:s",$data["end_time"]);
       $data['url'] = "/calendar/event".$data['id'].".html";
+//       $data['image'] = "/components/calendar/images/no_image.png";
       
       if($data["author_id"] == $inUser->id or $inUser->is_admin)
       {

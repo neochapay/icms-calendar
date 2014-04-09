@@ -134,7 +134,7 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
 
 <script type="text/javascript" src="/admin/components/calendar/colorpicker/colorpicker.js"></script>
 <form action="index.php?view=components&amp;do=config&amp;id=<?php echo $_REQUEST['id'];?>" method="post" name="optform" target="_self" id="optform">
-<div id="config_tabs" style="margin-top:12px;">
+  <div id="config_tabs" style="margin-top:12px;" class="uitabs">
     <ul id="tabs">
         <li><a href="#basic"><span>Общие</span></a></li>
         <li><a href="#calendar_category"><span>Категории</span></a></li>
@@ -290,7 +290,6 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
                 </tr>                 
          </table>
     </div>
-</div>
 <!--Изображения -->
     <div id="calendar_category">
         <table width="661" border="0" cellpadding="10" cellspacing="0" class="proptable">
@@ -474,6 +473,7 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
         </tr>        
       </table>
     </div>
+  </div>
 <p>
     <input name="opt" type="hidden" value="saveconfig" />
     <input name="save" type="submit" id="save" value="Сохранить" />
