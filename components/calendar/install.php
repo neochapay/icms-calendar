@@ -43,7 +43,7 @@
 		      `event_id` int(11) NOT NULL,
 		      `user_id` int(11) NOT NULL,
 		      `time` int(11) NOT NULL
-		      ) ENGINE=MyISAM DEFAULT CHARSET=cp1251 COLLATE=utf8");
+		      ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8");
 		      
 	$inDB->query("CREATE TABLE IF NOT EXISTS `cms_fotolib` (
 		      `id` int(11) NOT NULL AUTO_INCREMENT,
