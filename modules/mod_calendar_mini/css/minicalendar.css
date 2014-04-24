@@ -1,0 +1,50 @@
+.module_calendar_mini_table{
+  width: 100%;
+  position: relative;
+}
+
+.module{
+  overflow: visible !important;
+}
+
+.module_calendar_mini TD{
+}
+
+.module_calendar_mini_table td.holyday{
+  color: red;
+}
+
+H3.module_calendar_mini{
+  text-align: center;
+  margin: 0px !important;
+}
+
+.have_event{
+  position: relative;
+  cursor: pointer;
+}
+
+.have_event span.dayview{
+  font-weight: bold;
+}
+
+.eventlist{
+  background-color: white;
+  border-radius: 5px;
+  position: absolute;
+  display: inline-block;
+  width: 200px;
+  top: 0px;
+  left: -15px;
+  display: none;
+}
+.eventlist ul{
+  margin: 0px;
+  padding: 3px;
+}
+
+.eventlist LI{
+  margin: 0px;
+  padding-left: 3px;
+  list-style: none;
+}
