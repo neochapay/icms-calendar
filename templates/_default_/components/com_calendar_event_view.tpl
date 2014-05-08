@@ -76,7 +76,7 @@
 	  </a>
 	</div>
       </div>
-      {if $event.type == "public" and $status != "Прошедшее событие"}
+      {if $event.type == "public" and $status != "Прошедшее событие" and $user_id != 0}
 	{if $issngnup}
 	  <div class="signup"><a href="/calendar/signup{$event.id}.html">Отказаться</a></div>
 	{else}

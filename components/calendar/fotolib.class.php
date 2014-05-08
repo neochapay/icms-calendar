@@ -39,7 +39,7 @@ class FotoLib
     return $images;
   }
   
-  public function addAcces($type)
+  public function addAcces($type,$event)
   {
     $cfg = $this->inCore->loadComponentConfig($type);
     $allow_add_foto = FALSE; //Ставим изначально запрет на добавление
@@ -49,7 +49,7 @@ class FotoLib
       $allow_add_foto = TRUE;
     }
 //Если мы автор и разрешено добавлять только авторам
-    if($place['user_id'] == $this->inUser->id AND $cfg['calendar_image_acces'] == "author")
+    if($event['author_id'] == $this->inUser->id AND $cfg['calendar_image_acces'] == "author")
     {
       $allow_add_foto = TRUE;
     }
@@ -58,7 +58,6 @@ class FotoLib
     {
       $allow_add_foto = TRUE;
     }
-    
     return $allow_add_foto;
   }
   

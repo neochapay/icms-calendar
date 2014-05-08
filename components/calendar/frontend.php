@@ -211,22 +211,21 @@ function calendar()
   if($do == "view_event")
   {
     $event_id = $inCore->request('event_id', 'int', 0);
-    
+    $event = $model->getEvent($event_id);
+
 /*FOTOLIB*/
     include('fotolib.class.php');
     $foto = new FotoLib();
     //Проверяем можем ли добавлять фото
-    $allow_add_foto = $foto->addAcces("calendar");
-  
+    $allow_add_foto = $foto->addAcces("calendar",$event);
+
     if($_FILES)
     {
       $foto->uploadFoto($_FILES, "calendar", $event_id);
     }
-        
+
     $images = $foto->loadImages("calendar",$event_id);
 /*FOTOLIB*/    
-    
-    $event = $model->getEvent($event_id);
 
     if(!$event)
     {
@@ -323,6 +322,8 @@ function calendar()
       $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
       
       $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
+      $smarty->assign('user_id', $inUser->id);
+      
       $smarty->assign('event', $event);
       $smarty->assign('content', $msg);
       
