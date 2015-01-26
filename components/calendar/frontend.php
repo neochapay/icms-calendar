@@ -34,7 +34,7 @@ function calendar()
     $inPage->setTitle("Календарь событий");
     $inPage->addPathway("Календарь","/calendar");
     
-    $smarty = $inCore->initSmarty('components', 'com_calendar_view.tpl');
+    $smarty = $inPage->initTemplate('components', 'com_calendar_view.tpl');
     
     $category_id = $inCore->request('category_id', 'int', 0);
 
@@ -107,7 +107,7 @@ function calendar()
     }
   
     $inPage->setTitle("Календарь событий");
-    $smarty = $inCore->initSmarty('components', 'com_calendar_list.tpl');
+    $smarty = $inPage->initTemplate('components', 'com_calendar_list.tpl');
     $smarty->assign('events', $output);
     $smarty->assign('cfg', $cfg);
     $smarty->display('com_calendar_list.tpl');
@@ -192,7 +192,7 @@ function calendar()
       $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
       $smilies    = cmsPage::getSmilesPanel('message');
       $inPage->setTitle("Добавить событие");
-      $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
+      $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
       $smarty->assign('bb_toolbar', $bb_toolbar);
       $smarty->assign('smilies', $smilies);
       $smarty->assign('title', $event['title']);
@@ -321,7 +321,7 @@ function calendar()
       }
       $inPage->addPathway($event['title'], "/calendar/event".$event_id.".html");
       
-      $smarty = $inCore->initSmarty('components', 'com_calendar_event_view.tpl');
+      $smarty = $inPage->initTemplate('components', 'com_calendar_event_view.tpl');
       $smarty->assign('user_id', $inUser->id);
       
       $smarty->assign('event', $event);
@@ -483,7 +483,7 @@ function calendar()
       $catigories = $model->getAllCategories();
 
       $inPage->setTitle("Редактировать событие");
-      $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
+      $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
       $smarty->assign('event', $event);
       $smarty->assign('edit', 1);
       $smarty->assign('cfg', $cfg);
@@ -569,7 +569,7 @@ function calendar()
     $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
     $smilies    = cmsPage::getSmilesPanel('message');
     $inPage->setTitle("Добавить вложеное событие");
-    $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
+    $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
     $smarty->assign('parent', "1");
@@ -945,7 +945,7 @@ function calendar()
     $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
     $smilies    = cmsPage::getSmilesPanel('message');
       
-    $smarty = $inCore->initSmarty('components', 'com_calendar_add.tpl');
+    $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
     $smarty->assign('catigories', $catigories);
     $smarty->assign('start_date', date("d.m.Y", $start));
     $smarty->assign('start_hour', $start_hour);
@@ -956,6 +956,9 @@ function calendar()
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
     $smarty->assign('cfg', $cfg);
+    
+    //print_r($cfg);
+    
     $smarty->display('com_calendar_add.tpl');
     exit;
   }
