@@ -4,15 +4,16 @@ var cfg;
 var d = date.getDate();
 var m = date.getMonth();
 var y = date.getFullYear();
-    
+var calendar;
+
 $(document).ready(function(){
-   
+    
     $.ajax({
         url:    '/calendar/ajax_get_config',
         success: function(json)
         {
             cfg = jQuery.parseJSON(json);
-            var calendar = $('#fullcalendar').fullCalendar({
+            calendar = $('#fullcalendar').fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -36,12 +37,79 @@ $(document).ready(function(){
 		maxTime: cfg.calendar_maxTime,
 		allDayDefault: false,
 		firstDay: '1',
+                selectable: $("#fullcalendar").data("can-add"),
+                selectHelper: $("#fullcalendar").data("can-add"),
+                select: function(start, end, allDay) {
+                        var start_time = $.fullCalendar.formatDate(start, 'dd-MM-yyyy HH:mm:ss');
+                        var end_time   = $.fullCalendar.formatDate(end, 'dd-MM-yyyy HH:mm:ss');
+                        
+                        $.ajax({
+                            url:    	'/calendar/ajax_add_form',
+                            data: 	"start="+start_time+"&end="+end_time,
+                            type:   	'post',
+                            success: function(form)
+                            {
+                            answer = form;
+                            if(form != "error")
+                            {
+                                $("#configdialog").html(form);
+                                $("#configdialog").dialog("open");
+                            }
+                            }
+                        });
+                        
+                        $("#configdialog").dialog({
+                            close: function(event, ui) {
+                            var title = $("#title").val();
+                            var data  = $("#eventform").serialize();
+                            if (title) 
+                            {
+                                $.ajax({
+                                url:    	'/calendar/ajax_add',
+                                data: 	data,
+                                type:   	'post',
+                                success: function(json)
+                                {
+                                var answer = jQuery.parseJSON(json);
+                                if(!answer)
+                                {
+                                    alert('Получены неверные данные'); 
+                                }
+                                var id = answer.event_id;
+                                if(answer.error)
+                                {
+                                    alert(answer.errortext);
+                                }
+                                else
+                                {
+                                    calendar.fullCalendar('renderEvent',
+                                    {
+                                    id: id,
+                                    title: title,
+                                    start: answer.start,
+                                    end: answer.end,
+                                    allDay: answer.allDay,
+                                    editable: true,
+                                    color: answer.bg,
+                                    textColor: answer.tx,
+                                    url   : '/calendar/event'+id+'.html'
+                                    },
+                                    true // make the event "stick"
+                                    );
+                                }
+                                }
+                            })
+                            };
+                            $("#configdialog").html("<i>Минуточку...</i>");
+                        }
+                        })
+                    calendar.fullCalendar('unselect');
+                },
 		eventSources: [{
                     url: '/calendar/ajax_get_event',
                     type: 'POST',
                     data:{
-                        //FIXME - необходимо поправить категорию
-                        category: 0
+                        category: $("#fullcalendar").data("category-id")
                     }
                 }],
                 eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
@@ -76,6 +144,11 @@ $(document).ready(function(){
                 },
                 timeFormat: 'H:mm'
             });
+            
+            if($("#fullcalendar").data("can-add") == 1)
+            {
+                console.log('OK');
+            }
         }
     })
     

@@ -8,7 +8,7 @@
 {add_js file="core/js/smiles.js"}
 
 <h1 class="con_heading">Календарь</h1>
-<div id='fullcalendar' {if !$guest}class="manage"{/if}></div>
+<div id='fullcalendar' {if $can_add}class="manage"{/if} data-category-id="{$category}" data-can-add="{if $can_add}1{else}0{/if}"></div>
 {if $guest != TRUE}
   <div id="configdialog" title="Добавить мероприятие">
     <i>Секундочку...</i>
