@@ -62,3 +62,7 @@ UL.calendar LI{
   border: 1px solid black;
   float: left;
 }
+
+#fullcalendar.manage{
+    cursor: url('/components/calendar/images/list-add.png'),crosshair;
+}

@@ -170,6 +170,7 @@ class cms_model_calendar
       $sql .= " AND category_id = $category_id";
     }    
     
+    $sql .= " ORDER BY cms_events.start_time ASC";
     
     $result = $this->inDB->query($sql);
     

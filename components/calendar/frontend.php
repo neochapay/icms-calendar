@@ -962,6 +962,13 @@ function calendar()
     $smarty->display('com_calendar_add.tpl');
     exit;
   }
+  
+  if($do == "ajax_get_config")
+  {
+    print json_encode($cfg);
+    exit;
+  }
+  
 //   FOTOLIB
   if($do == "imagerotate")
   {

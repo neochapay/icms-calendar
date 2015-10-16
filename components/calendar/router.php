@@ -84,6 +84,11 @@ function routes_calendar()
   );
   
   $routes[] = array(
+      '_uri'  => '/^calendar\/ajax_get_config$/i',
+      'do'    => 'ajax_get_config'
+  );
+  
+  $routes[] = array(
       '_uri'  => '/^calendar\/rotate\/([a-zA-Z0-9\-]+)\/([a-zA-Z0-9\-]+).html$/i',
       'do'    => 'imagerotate',
       1	      => 'side',
