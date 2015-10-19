@@ -5,7 +5,7 @@
         $_component['link']         = 'calendar';
         $_component['author']       = 'Сергей Игоревич (NeoChapay)';
         $_component['internal']     = '0';
-        $_component['version']      = '0.4.2';
+        $_component['version']      = '0.5.0';
         $inCore = cmsCore::getInstance();
         $inCore->loadModel('calendar');
         $_component['config'] = cms_model_calendar::getDefaultConfig();
@@ -28,6 +28,7 @@
 		      `title` varchar(128) NOT NULL,
 		      `content` longtext NOT NULL,
 		      `parent_id` int(11) NOT NULL,
+		      `hide` int(1) NOT NULL,
 		      PRIMARY KEY (`id`)
 		      ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
 
@@ -98,6 +99,7 @@
     function upgrade_component_calendar(){
         $inCore = cmsCore::getInstance();
         $inDB = cmsDatabase::getInstance();
+        $inDB->query("ALTER TABLE  `cms_events` ADD  `hide` INT NOT NULL ;");
         return true;
     }
 

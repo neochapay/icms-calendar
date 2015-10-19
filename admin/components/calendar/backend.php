@@ -111,7 +111,7 @@ if($opt=='saveconfig'){
 	unset($name);
       }
     }
-//Группы пользователей
+//Группы пользователей без модерации
     foreach($groups as $group)
     {
       $id = $group['id'];
@@ -122,6 +122,20 @@ if($opt=='saveconfig'){
       else
       {
 	$cfg['group_'.$id] = FALSE;      
+      }
+    }
+    
+//Группы пользователей с модерацией
+    foreach($groups as $group)
+    {
+      $id = $group['id'];
+      if($_POST['m_group_'.$id] == "on")
+      {
+	$cfg['m_group_'.$id] = TRUE;
+      }
+      else
+      {
+	$cfg['m_group_'.$id] = FALSE;      
       }
     }
     $inCore->saveComponentConfig('calendar', $cfg);
@@ -161,9 +175,9 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
                 </tr>
                <tr>
                     <td width="250">
-                        <strong>Доступ: </strong><br/>
+                        <strong>Прямой доступ: </strong><br/>
                         <span class="hinttext">
-                            Кому можно добавлять редактировать события
+                            Кому можно добавлять редактировать события без модерации
                         </span>
                     </td>
                     <td valign="top">
@@ -175,6 +189,27 @@ if ($msg) { echo '<p class="success">'.$msg.'</p>'; cmsUser::sessionDel('calendr
 				  $apx = 'checked="checked"';
 				}
 				print '<input type="checkbox" name="group_'.$group['id'].'" '.$apx.'>'.$group['title'].'<br />';
+				unset($apx);
+			      }
+                          ?>
+                    </td>
+                </tr>
+               <tr>
+                    <td width="250">
+                        <strong>Модерируемый доступ: </strong><br/>
+                        <span class="hinttext">
+                            Кому можно добавлять события на модерацию
+                        </span>
+                    </td>
+                    <td valign="top">
+                        <?php
+			      foreach ($groups as $group)
+			      {
+				if($cfg['m_group_'.$group['id']])
+				{
+				  $apx = 'checked="checked"';
+				}
+				print '<input type="checkbox" name="m_group_'.$group['id'].'" '.$apx.'>'.$group['title'].'<br />';
 				unset($apx);
 			      }
                           ?>

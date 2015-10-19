@@ -5,11 +5,6 @@ function routes_calendar()
       '_uri'  => '/^calendar\/view.html$/i',
       'do'    => 'view'
   );
-  
-  $routes[] = array(
-      '_uri'  => '/^calendar\/add.html$/i',
-      'do'    => 'add'
-  );
 
   $routes[] = array(
       '_uri'  => '/^calendar\/list.html$/i',
@@ -51,12 +46,6 @@ function routes_calendar()
       'do'    => 'event_signup',
       1       => 'event_id'
   );
-
-  $routes[] = array(
-      '_uri'  => '/^calendar\/add_parent([0-9]+).html$/i',
-      'do'    => 'add_parent',
-      1       => 'event_id'
-  );  
   
   $routes[] = array(
       '_uri'  => '/^calendar\/config.html$/i',

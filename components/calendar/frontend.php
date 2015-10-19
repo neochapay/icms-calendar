@@ -38,11 +38,18 @@ function calendar()
     
     $category_id = $inCore->request('category_id', 'int', 0);
 
-    $guest = TRUE;
+    $can_add = FALSE;
+    $moderated = TRUE;
     
     if($cfg['group_'.$inUser->group_id])
     {
       $can_add = TRUE;
+      $moderated = FALSE;
+    }
+    elseif($cfg['m_group_'.$inUser->group_id])
+    {
+      $can_add = TRUE;
+      $moderated = TRUE;
     }
 
     $catigories = $model->getAllCategories();
@@ -113,101 +120,6 @@ function calendar()
     $smarty->display('com_calendar_list.tpl');
   }
   
-  if ($do == 'add')
-  {
-    if($cfg['group_'.$inUser->group_id])
-    {
-      $can_add = TRUE;
-    }  
-  
-    if(!$can_add)
-    {
-      $inCore->redirectBack();
-    }
-
-    $is_send = $inCore->inRequest('title');
-    if($is_send)
-    {
-      $title = $inCore->request('title', 'str');
-      $type_raw = $inCore->request('type', 'str');
-      $date_start = $inCore->request('date_start', 'str');
-      $date_end = $inCore->request('date_end', 'str');
-      $hour_start = $inCore->request('hour_start', 'str');
-      $hour_end = $inCore->request('hour_end', 'str');
-      $min_start = $inCore->request('min_start', 'str');
-      $min_end = $inCore->request('min_end', 'str');
-      $content = $inCore->request('content', 'str');
-      if(!$title || !$type_raw || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
-      {
-      	cmsCore::addSessionMessage('Ой, что то не было заполнено...', 'error');
-	$inCore->redirectBack();
-	exit;
-      }
-      else
-      {
-	$start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
-	$end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
-
-	if($data_end == "" or $date_end < $date_start)
-	{
-	  $data_end = $data_start;
-	}
-	$type_data = explode("_",$type_raw);
-	$type = $type_data[0];
-	$apx = $type_data[1];
-	$event_id = $model->addEvent($inUser->id,$type,$apx,$start_time,$end_time,$title,$content);
-
-	if($event_id)
-	{
-	  if($type != "private")
-	  {
-	    cmsActions::log('add_event', array(
-                'object' => 'событие',
-                'object_url' => '/calendar/event'.$event_id.'.html',
-                'object_id'=>$event_id,
-                'target' => $title,
-                'target_url' => '/calendar/event'.$event_id.'.html',
-                'target_id' => '0',
-                'description' => $title));
-	  }
-	  cmsCore::addSessionMessage('Ваше мероприятие добавлено!', 'success');
-	}
- 	else
- 	{
-	  cmsCore::addSessionMessage('Ошибка добавления!', 'error');
- 	}
-	$inCore->redirect('/calendar'); exit;
-      }
-    }
-      if($event['start_time'] == "")
-      {
-	$event['start_time'] = time();
-      }
-
-      if($event['end_time'] == "")
-      {
-	$event['end_time'] = time();
-      }
-
-      $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
-      $smilies    = cmsPage::getSmilesPanel('message');
-      $inPage->setTitle("Добавить событие");
-      $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
-      $smarty->assign('bb_toolbar', $bb_toolbar);
-      $smarty->assign('smilies', $smilies);
-      $smarty->assign('title', $event['title']);
-      $smarty->assign('content', $event['content']);
-      $smarty->assign('type', $event['type']);
-      $smarty->assign('start_date', date("d.m.Y", $event['start_time']));
-      $smarty->assign('start_hour', date("H", $event['start_time']));
-      $smarty->assign('start_min', date("i", $event['start_time']));
-      $smarty->assign('end_date', date("d.m.Y", $event['end_time']));
-      $smarty->assign('end_hour', date("H", $event['end_time']));
-      $smarty->assign('end_min', date("i", $event['end_time']));
-      $smarty->display('com_calendar_add.tpl');
-      return;
-  }
-
   if($do == "view_event")
   {
     $event_id = $inCore->request('event_id', 'int', 0);
@@ -229,9 +141,15 @@ function calendar()
 
     if(!$event)
     {
-      cmsCore::addSessionMessage('Ошибка запроса'.mysql_error(), 'error');
+      cmsCore::addSessionMessage('Ошибка запроса', 'error');
       $inCore->redirect('/calendar');
       exit;
+    }
+    elseif($event['hide']==1 and !$inUser->is_admin)
+    {
+      cmsCore::addSessionMessage('Ошибка доступа', 'error');
+      $inCore->redirect('/calendar');
+      exit;    
     }
     else
     {
@@ -504,90 +422,6 @@ function calendar()
       return;
     }
   }
-
-  if($do == "add_parent")
-  {
-    if($cfg['group_'.$inUser->group_id])
-    {
-      $can_add = TRUE;
-    }
-    
-    if(!$can_add)
-    {
-      $inCore->redirectBack();
-      return;
-    }
-    
-    $event_id = $inCore->request('event_id', 'int', 0);
-    $event = $model->getEvent($event_id);
-    
-    if($event['user_id'] != $inUser->id)
-    {
-      $inCore->redirectBack();
-      return;    
-    }
-    
-    if(!$event)
-    {
-      $inCore->redirectBack();
-      return;    
-    }
-    
-    $is_send = $inCore->inRequest('title');
-    if($is_send)
-    {
-      $title = $inCore->request('title', 'str');
-      
-      $date_start = $inCore->request('date_start', 'str');
-      $date_end = $inCore->request('date_end', 'str');
-      $hour_start = $inCore->request('hour_start', 'str');
-      $hour_end = $inCore->request('hour_end', 'str');
-      $min_start = $inCore->request('min_start', 'str');
-      $min_end = $inCore->request('min_end', 'str');
-      $content = $inCore->request('content', 'str');
-      if(!$title || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
-      {
-      	cmsCore::addSessionMessage('Ой, что то не было заполнено...', 'error');
-	$inCore->redirectBack();
-	exit;
-      }
-      else
-      {
-	$start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
-	$end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
-
-	if($data_end == "" or $date_end < $date_start)
-	{
-	  $data_end = $data_start;
-	}
-	$type = $event['type'];
-	$model->addEvent($inUser->id,$type,$apx,$start_time,$end_time,$title,$content,$event['id']);
-	$inCore->redirect('/calendar/event'.$event['id'].".html"); exit;
-      }
-    }
-
-    $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
-    $smilies    = cmsPage::getSmilesPanel('message');
-    $inPage->setTitle("Добавить вложеное событие");
-    $smarty = $inPage->initTemplate('components', 'com_calendar_add.tpl');
-    $smarty->assign('bb_toolbar', $bb_toolbar);
-    $smarty->assign('smilies', $smilies);
-    $smarty->assign('parent', "1");
-    $smarty->assign('edit', "1");
-    $smarty->assign('parent_title', $event['title']);
-    $smarty->assign('title', "");
-    $smarty->assign('cfg', $cfg);
-    $smarty->assign('content', "");
-    $smarty->assign('type', $event['type']);
-    $smarty->assign('start_date', date("d.m.Y", $event['start_time']));
-    $smarty->assign('start_hour', date("H", $event['start_time']));
-    $smarty->assign('start_min', date("i", $event['start_time']));
-    $smarty->assign('end_date', date("d.m.Y", $event['end_time']));
-    $smarty->assign('end_hour', date("H", $event['end_time']));
-    $smarty->assign('end_min', date("i", $event['end_time']));
-    $smarty->display('com_calendar_add.tpl');
-    return;
-  }
   
   if($do == "event_signup")
   {
@@ -653,9 +487,18 @@ function calendar()
 //AJAX  
   if($do == "ajax_add")
   {
+    $can_add = FALSE;
+    $moderated = TRUE;
+    
     if($cfg['group_'.$inUser->group_id] or $inUser->is_admin)
     {
       $can_add = TRUE;
+      $moderated = FALSE;
+    }
+    elseif($cfg['m_group_'.$inUser->group_id])
+    {
+      $can_add = TRUE;
+      $moderated = TRUE;
     }
     
     if($can_add)
@@ -710,7 +553,7 @@ function calendar()
 	$type = "public";
       }
       
-      $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content);
+      $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content,$moderated);
       
       $output = array();
       
@@ -824,7 +667,12 @@ function calendar()
       $parent_id = 0;
     }
     
-    $events = $model->getCalendar($starttime, $endtime, $category,$parent_id);
+    if($inUser->is_admin)
+    {
+        $show_hidden = true;
+    }
+    
+    $events = $model->getCalendar($starttime, $endtime, $category,$parent_id,$show_hidden);
     $output = array();
     foreach($events as $data)
     {

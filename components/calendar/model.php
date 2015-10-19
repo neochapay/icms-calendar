@@ -31,10 +31,10 @@ class cms_model_calendar
 
     }
 
-  function addEvent($author_id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id = 0)
+  function addEvent($author_id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id = 0, $hide = 0)
   {
-    $sql = "INSERT INTO cms_events (author_id , type, category_id, start_time, end_time, title, content, parent_id) VALUES
-				   ('{$author_id}', '{$type}', '{$category_id}', '{$start_time}','{$end_time}','{$title}','{$content}','{$parent_id}')";
+    $sql = "INSERT INTO cms_events (author_id , type, category_id, start_time, end_time, title, content, parent_id, hide) VALUES
+				   ('{$author_id}', '{$type}', '{$category_id}', '{$start_time}','{$end_time}','{$title}','{$content}','{$parent_id}','{$hide}')";
     $this->inDB->query($sql);
 
     if ($this->inDB->error()) 
@@ -47,7 +47,7 @@ class cms_model_calendar
     }
   }
 
-  function updateEvent($event_id,$type,$category_id,$start_time,$end_time,$title,$content)
+  function updateEvent($event_id,$type,$category_id,$start_time,$end_time,$title,$content,$hide = 0)
   {
     $sql = "UPDATE cms_events SET 
     type = '$type', 
@@ -55,6 +55,7 @@ class cms_model_calendar
     start_time = '$start_time', 
     end_time = '$end_time', 
     title = '$title', 
+    hide = '$hide',
     content = '$content' WHERE id = '$event_id'";
 
     $this->inDB->query($sql);
@@ -139,7 +140,7 @@ class cms_model_calendar
     return true;
   }
 
-  function getCalendar($start_time, $end_time, $category_id,$parent_id)
+  function getCalendar($start_time, $end_time, $category_id,$parent_id, $show_hidden = FALSE)
   {
     if($start_time and $end_time)
     {
@@ -163,6 +164,11 @@ class cms_model_calendar
       cms_events_category.id as category_id
       FROM cms_events 
       LEFT JOIN cms_events_category ON cms_events.category_id = cms_events_category.id";
+    }
+    
+    if(!$show_hidden)
+    {
+        $sql .= 'AND cms_events.hide = 0';
     }
       
     if($category_id)
