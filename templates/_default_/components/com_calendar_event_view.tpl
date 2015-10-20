@@ -3,44 +3,10 @@
 {add_js file="components/calendar/js/fancybox/jquery.fancybox.pack.js"}
 
 {if $parent}
-  {add_js file="components/calendar/js/jquery-ui-1.8.23.custom.min.js"}
-  {add_css file="components/calendar/css/fullcalendar.css"}
-  {add_js file="components/calendar/js/fullcalendar.js"}
-  <script type='text/javascript'>
-  {literal}
-    $(document).ready(function() {
-      $('#calendar').fullCalendar({
-	header: {
-	  left: 'prev,next today',
-	  center: 'title',
-	  right: 'month,agendaWeek,agendaDay'
-	},
-	editable: false,
-	buttonText: {
-	  today:    'сегодня',
-	  month:    'месяц',
-	  week:     'неделя',
-	  day:      'день'
-	},
-	year: {/literal}{$year}{literal},
-	month: {/literal}{$month}{literal},
-	date: {/literal}{$day}{literal},
-	monthNamesShort: ['Янв', 'Февр', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-	monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-	dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-	dayNames:['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-	allDayText: 'весь день',
-	axisFormat: 'H:mm',
-	defaultView: '{/literal}{$calendar_view}{literal}',
-	firstDay: '1',
-	timeFormat: 'H:mm',
-	events:[
-	  {/literal}{$events_string}{literal}
-	  ]
-	});
-      });
-    {/literal}
-  </script>
+    {add_js file="components/calendar/js/jquery-ui-1.8.23.custom.min.js"}
+    {add_css file="components/calendar/css/fullcalendar.css"}
+    {add_js file="components/calendar/js/fullcalendar.js"}
+    {add_js file="components/calendar/js/calendar.js"}
 {/if}
 
 {literal}
@@ -187,7 +153,12 @@
 	    <div class="title"><a>Календарь мероприятия</a></div>
 	  </div>
 	  <div class="content">
-	    <div id="calendar"></div>
+	    <div id='fullcalendar' {if $can_add}class="manage"{/if} data-category-id="{$category}" data-can-add="{if $can_add}1{else}0{/if}" data-parent-id="{$event.id}"></div>
+	    {if $can_add}
+                <div id="configdialog" title="Добавить мероприятие">
+                    <i>Секундочку...</i>
+                </div>
+            {/if}
 	  </div>
 	{/if}
       </div>
