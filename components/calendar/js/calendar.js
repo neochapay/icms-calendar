@@ -62,11 +62,12 @@ $(document).ready(function(){
                             close: function(event, ui) {
                             var title = $("#title").val();
                             var data  = $("#eventform").serialize();
+                            var parent_id = $("#fullcalendar").data('parent-id');
                             if (title) 
                             {
                                 $.ajax({
                                 url:    	'/calendar/ajax_add',
-                                data: 	data,
+                                data: 	data+"&parent_id="+parent_id,
                                 type:   	'post',
                                 success: function(json)
                                 {

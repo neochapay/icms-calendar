@@ -512,6 +512,7 @@ function calendar()
       $min_start = $inCore->request('min_start', 'str');
       $min_end = $inCore->request('min_end', 'str');
       $content = $inCore->request('content', 'str');
+      $parent_id = $inCore->request('parent_id', 'int');
       
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
@@ -553,7 +554,30 @@ function calendar()
 	$type = "public";
       }
       
-      $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content,$moderated);
+      if($parent_id)
+      {
+        $parent = $model->getEvent($parent_id);
+        if(!$parent)
+        {
+            $output['error'] = TRUE;
+            $output['errortext'] = "Родительское событие не найдено";
+        }
+        elseif($parent['user_id'] != $inUser->id or !$inUser->is_admin)
+        {
+            $output['error'] = TRUE;
+            $output['errortext'] = "Ошибка прав доступа"; 
+        }
+        elseif($parent['hide'] == 1)
+        {
+            $output['error'] = TRUE;
+            $output['errortext'] = "Нельзя добавлять события в скрытое событие";        
+        }
+      }
+            
+      if(!$output['error'])
+      {
+        $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id,$moderated);
+      }
       
       $output = array();
       
