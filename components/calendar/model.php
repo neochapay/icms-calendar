@@ -196,6 +196,11 @@ class cms_model_calendar
     {
       $row['start_date'] = date("Y-m-d H:i",$row['start_time']);
       $row['end_date'] = date("Y-m-d H:i",$row['end_time']);
+      if($row['bg'] == "")
+      {
+        $row['bg'] = $this->config['public_bg_color'];
+        $row['tx'] = $this->config['public_tx_color'];
+      }
       $output[] = $row;
     }
     return $output;

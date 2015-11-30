@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<backend>
+    <info>
+        <type>module</type>
+        <id>mod_calendar_eventview</id>
+    </info>
+    <params>
+        <param type="list" name="event_rate">
+            <option value="7" />
+            <option value="30" />
+            <option value="90" />
+            <option value="365" />
+        </param>
+    </params>
+</backend>
