@@ -5,7 +5,7 @@
         $_component['link']         = 'calendar';
         $_component['author']       = 'Сергей Игоревич (NeoChapay)';
         $_component['internal']     = '0';
-        $_component['version']      = '0.5.0';
+        $_component['version']      = '0.5.1';
         $inCore = cmsCore::getInstance();
         $inCore->loadModel('calendar');
         $_component['config'] = cms_model_calendar::getDefaultConfig();
