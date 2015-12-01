@@ -196,6 +196,8 @@ class cms_model_calendar
     {
       $row['start_date'] = date("Y-m-d H:i",$row['start_time']);
       $row['end_date'] = date("Y-m-d H:i",$row['end_time']);
+      $row['f_start_date'] =  cmsCore::dateFormat(date("Y-m-d H:i",$row['start_time']));
+      $row['f_end_date'] =  cmsCore::dateFormat(date("Y-m-d H:i",$row['end_time']));
       if($row['bg'] == "")
       {
         $row['bg'] = $this->config['public_bg_color'];

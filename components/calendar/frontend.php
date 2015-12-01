@@ -52,6 +52,11 @@ function calendar()
       $moderated = TRUE;
     }
 
+    if($inUser->is_admin)
+    {
+      $can_add = TRUE;
+    }
+    
     $catigories = $model->getAllCategories();
     
     if($category_id)
@@ -861,6 +866,12 @@ function calendar()
     $foto = new FotoLib();
     $foto->Delete($image_id);
     $inCore->redirectBack();
+    exit;
+  }
+  
+  if($do == "ajax_format_date")
+  {
+    print cmsCore::dateFormat(date('Y-m-d H:i:s',$inCore->request('time', 'int')),0,0,0);
     exit;
   }
 }
