@@ -7,7 +7,8 @@
   overflow: visible !important;
 }
 
-.module_calendar_mini TD{
+.module_calendar_mini_table TD{
+    text-align: center;
 }
 
 .module_calendar_mini_table td.holyday{
@@ -22,6 +23,11 @@ H3.module_calendar_mini{
 .have_event{
   position: relative;
   cursor: pointer;
+  border: 1px solid black;
+}
+
+.have_event:hover{
+    background-color: rgba(0,0,0,0.3);
 }
 
 .have_event span.dayview{
@@ -44,7 +50,11 @@ H3.module_calendar_mini{
 }
 
 .eventlist LI{
-  margin: 0px;
+  margin: 2px;
   padding-left: 3px;
   list-style: none;
+}
+
+.eventlist LI A{
+    text-decoration: none;
 }
