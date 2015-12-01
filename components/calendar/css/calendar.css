@@ -66,3 +66,12 @@ UL.calendar LI{
 #fullcalendar.manage{
     cursor: url('/components/calendar/images/list-add.png'),crosshair;
 }
+
+UL.event_list{
+    padding-left: 0px;
+}
+
+UL.event_list LI{
+    list-style: none;
+    margin-left: 0px;
+}
