@@ -5344,7 +5344,7 @@ function DayEventRenderer() {
 		var skinCss = getSkinCss(event, opt);
 
 		if (url) {
-			html += "<a data-id=1 href='" + htmlEscape(url) + "'";
+			html += "<a href='" + htmlEscape(url) + "'";
 		}else{
 			html += "<div";
 		}
