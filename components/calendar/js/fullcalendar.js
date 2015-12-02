@@ -5348,14 +5348,17 @@ function DayEventRenderer() {
 		}else{
 			html += "<div";
 		}
-		html +=
+                html +=
 			" class='" + classNames.join(' ') + "'" +
 			" style=" +
 				"'" +
 				"position:absolute;" +
-				"left:" + segment.left + "px;" +
-				skinCss +
-				"'" +
+				"left:" + segment.left + "px;"
+                if(event.hide == 1)
+                {
+                    html += ' opacity: 0.5; ';
+                }
+		html +=	skinCss+"'" +
 			">" +
 			"<div class='fc-event-inner'>";
 		if (!event.allDay && segment.isStart) {
