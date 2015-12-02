@@ -331,7 +331,11 @@ function calendar()
 	$inCore->redirectBack();
 	exit;
     }
-
+    
+    if($inUser->is_admin)
+    {
+        $can_moderate = true;
+    }
 
     $is_send = $inCore->inRequest('title');
     if($is_send)
@@ -390,7 +394,7 @@ function calendar()
       $event = $model->getEvent($event_id);
       if(!$event)
       {
-	cmsCore::addSessionMessage('Ошибка запроса', 'error');
+	cmsCore::addSessionMessage('Ошибка запроса тут', 'error');
 	$inCore->redirect('/calendar');
 	exit;
       }
@@ -422,6 +426,7 @@ function calendar()
       $smarty->assign('end_min', date("i", $event['end_time']));
       $smarty->assign('bb_toolbar', $bb_toolbar);
       $smarty->assign('smilies', $smilies);
+      $smarty->assign('can_moderate', $can_moderate);
 
       $smarty->display('com_calendar_add.tpl');
       return;
