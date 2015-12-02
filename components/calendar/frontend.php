@@ -349,15 +349,18 @@ function calendar()
       $min_start = $inCore->request('min_start', 'str');
       $min_end = $inCore->request('min_end', 'str');
       $content = $inCore->request('content', 'str');
-      
-      $m_hide = $inCore->request('hide', 'str');
-      if($m_hide == "on" or $moderated)
+
+      if($can_moderate)
       {
-        $hide = 1;
-      }
-      else
-      {
-        $hide = 0;
+        $m_hide = $inCore->request('hide', 'str');
+        if($m_hide == "on")
+        {
+            $hide = 1;
+        }
+        else
+        {
+            $hide = 0;
+        }
       }
       
       if(!$title || !$type || !$date_start || !$hour_start || !$hour_end || !$min_start || !$min_end  )
@@ -385,7 +388,7 @@ function calendar()
 	  $type = "public";
 	}
 	
-	$update = $model->updateEvent($event_id,$type,$category_id,$start_time,$end_time,$title,$content);
+	$update = $model->updateEvent($event_id,$type,$category_id,$start_time,$end_time,$title,$content,$hide);
 	if($update)
 	{
 	  cmsCore::addSessionMessage('Ваше мероприятие изменено!', 'success');
