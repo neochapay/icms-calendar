@@ -5,6 +5,7 @@
  */
 
 /*
+ * UPDATED FOR Cheb.fm
  * Use fullcalendar.css for basic styling.
  * For event drag & drop, requires jQuery UI draggable.
  * For event resizing, requires jQuery UI resizable.
@@ -3983,9 +3984,12 @@ function AgendaEventRenderer() {
 				"'" +
 				"position:absolute;" +
 				"top:" + seg.top + "px;" +
-				"left:" + seg.left + "px;" +
-				skinCss +
-				"'" +
+				"left:" + seg.left + "px;"
+                if(event.hide == 1)
+                {
+                    html += ' opacity: 0.5; ';
+                }
+		html +=	skinCss+"'" +
 			">" +
 			"<div class='fc-event-inner'>" +
 			"<div class='fc-event-time'>" +
@@ -5340,7 +5344,7 @@ function DayEventRenderer() {
 		var skinCss = getSkinCss(event, opt);
 
 		if (url) {
-			html += "<a href='" + htmlEscape(url) + "'";
+			html += "<a data-id=1 href='" + htmlEscape(url) + "'";
 		}else{
 			html += "<div";
 		}

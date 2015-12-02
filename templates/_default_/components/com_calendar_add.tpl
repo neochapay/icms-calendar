@@ -125,6 +125,16 @@
 		    <textarea class="ajax_autogrowarea" name="content" id="message">{$content}</textarea>
 		</td>
 	</tr>
+	{if $can_moderate}
+            <tr>
+                <td>
+                    Скрыть мероприятие:
+                </td>
+                <td>
+                    <input type="checkbox" name="hide" {if $event.hide == 1}checked{/if}>
+                </td>
+            </tr>
+	{/if}
   </table>
   <br />
   {if $edit}

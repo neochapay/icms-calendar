@@ -83,20 +83,27 @@ $(document).ready(function(){
                                 }
                                 else
                                 {
-                                    calendar.fullCalendar('renderEvent',
+                                    if(answer.hide == 1)
                                     {
-                                    id: id,
-                                    title: title,
-                                    start: answer.start,
-                                    end: answer.end,
-                                    allDay: answer.allDay,
-                                    editable: true,
-                                    color: answer.bg,
-                                    textColor: answer.tx,
-                                    url   : '/calendar/event'+id+'.html'
-                                    },
-                                    true // make the event "stick"
-                                    );
+                                        alert("Ваше событие появится в календаре после одобрения модератором");
+                                    }
+                                    else
+                                    {
+                                        calendar.fullCalendar('renderEvent',
+                                        {
+                                            id: id,
+                                            title: title,
+                                            start: answer.start,
+                                            end: answer.end,
+                                            allDay: answer.allDay,
+                                            editable: true,
+                                            color: answer.bg,
+                                            textColor: answer.tx,
+                                            url   : '/calendar/event'+id+'.html'
+                                        },
+                                        true // make the event "stick"
+                                        );
+                                    }
                                 }
                                 }
                             })

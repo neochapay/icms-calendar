@@ -519,6 +519,16 @@ function calendar()
       $content = $inCore->request('content', 'str');
       $parent_id = $inCore->request('parent_id', 'int');
       
+      $m_hide = $inCore->request('hide', 'str');
+      if($m_hide == "on" or $moderated)
+      {
+        $hide = 1;
+      }
+      else
+      {
+        $hide = 0;
+      }
+      
       $start_time = strtotime($date_start.' '.$hour_start.':'.$min_start);
       $end_time = strtotime($date_end.' '.$hour_end.':'.$min_end);
       
@@ -581,7 +591,7 @@ function calendar()
             
       if(!$output['error'])
       {
-        $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id,$moderated);
+        $event_id = $model->addEvent($inUser->id,$type,$category_id,$start_time,$end_time,$title,$content,$parent_id,$hide);
       }
       
       $output = array();
@@ -598,6 +608,7 @@ function calendar()
 	$output['event_id'] = $event_id;
 	$output['start'] = $event['start_time'];
 	$output['end'] = $event['end_time'];
+	$output['hide'] = $hide;
 	
 	if($event['end_time']-$event['start_time'] > 60*60*8)
 	{
@@ -611,7 +622,7 @@ function calendar()
 	$output['bg'] = $event['bg'];
 	$output['tx'] = $event['tx'];
 	
-	if($type != "private")
+	if($type != "private" and $hide != 1)
 	{
 	  cmsActions::log('add_event', array(
               'object' => 'событие',
@@ -797,9 +808,9 @@ function calendar()
       exit;
     }
     
-    if(!$inUser->id)
+    if(!$cfg['group_'.$inUser->group_id] and !$inUser->is_admin and !$cfg['m_group_'.$inUser->group_id])
     {
-      echo "error";
+      echo 'error';
       exit;
     }
 //Коректность времени добавления
@@ -818,6 +829,11 @@ function calendar()
       $end_min = "00";
     }
     
+    if($inUser->is_admin)
+    {
+        $can_moderate = true;
+    }
+    
     $catigories = $model->getAllCategories();
     $bb_toolbar = cmsPage::getBBCodeToolbar('message',$cfg['img_on'], 'forum');
     $smilies    = cmsPage::getSmilesPanel('message');
@@ -830,6 +846,7 @@ function calendar()
     $smarty->assign('end_date', date("d.m.Y", $end));
     $smarty->assign('end_hour', $end_hour);
     $smarty->assign('end_min', $end_min);
+    $smarty->assign('can_moderate', $can_moderate);
     $smarty->assign('bb_toolbar', $bb_toolbar);
     $smarty->assign('smilies', $smilies);
     $smarty->assign('cfg', $cfg);
